@@ -44,4 +44,4 @@ Replace the changed files in the repository. The app keeps an offline copy, so t
 ## Credits
 
 - [pdf.js](https://github.com/mozilla/pdf.js) by Mozilla, Apache License 2.0 (`LICENSE-pdfjs.txt`)
-- [StPageFlip](https://github.com/Nodlik/StPageFlip) by Oleg Litovski, MIT License (`LICENSE-page-flip.txt`). The copy here has a few small fixes: its animation loop sleeps when the book is still (saves battery), a drag turns the page in the direction it started, a page dragged most of the way finishes turning, and a drag that can't turn no longer freezes taps.
+- [StPageFlip](https://github.com/Nodlik/StPageFlip) by Oleg Litovski, MIT License (`LICENSE-page-flip.txt`). The copy here has a few small fixes: its animation loop sleeps when the book is still (saves battery), going back a page works in portrait, a drag turns the page the way your finger moves (right = back, left = forward), a drag of about a quarter page finishes the turn, and a drag that can't turn no longer freezes taps.
