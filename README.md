@@ -17,7 +17,7 @@ Folio is only an app. Your PDFs are never uploaded. They are stored in the brows
 ## Put it online with GitHub Pages
 
 1. On github.com, click **New repository**. Name it `folio`, set it to **Public**, and create it.
-2. Click **uploading an existing file**. Drag in everything from this folder, including the `lib` folder, then click **Commit changes**.
+2. Click **uploading an existing file** (or **Add file → Upload files**). Select every file from this folder at once, then click **Commit changes**. All the files sit side by side, so this works from an iPad too.
 3. Open **Settings → Pages**. Under *Branch*, pick `main` and `/ (root)`, then **Save**.
 4. Wait a minute or two. Your app will be at `https://YOUR-USERNAME.github.io/folio/`.
 
@@ -36,12 +36,12 @@ Replace the changed files in the repository. The app keeps an offline copy, so t
 | File | Job |
 | --- | --- |
 | `index.html` | The whole app: shelf, reader, settings |
-| `lib/pdf.min.js`, `lib/pdf.worker.min.js` | pdf.js, which reads and draws PDF pages |
-| `lib/page-flip.browser.js` | StPageFlip, which draws the Curl and Hard turn animations |
+| `pdf.min.js`, `pdf.worker.min.js` | pdf.js, which reads and draws PDF pages |
+| `page-flip.browser.js` | StPageFlip, which draws the Curl and Hard turn animations |
 | `sw.js` | Keeps an offline copy of the app |
 | `manifest.webmanifest`, `icon-*.png`, `apple-touch-icon.png` | Name and icon for the home screen |
 
 ## Credits
 
-- [pdf.js](https://github.com/mozilla/pdf.js) by Mozilla, Apache License 2.0 (`lib/LICENSE-pdfjs.txt`)
-- [StPageFlip](https://github.com/Nodlik/StPageFlip) by Oleg Litovski, MIT License (`lib/LICENSE-page-flip.txt`). The copy in `lib` has a few small fixes: its animation loop sleeps when the book is still (saves battery), a drag turns the page in the direction it started, a page dragged most of the way finishes turning, and a drag that can't turn no longer freezes taps.
+- [pdf.js](https://github.com/mozilla/pdf.js) by Mozilla, Apache License 2.0 (`LICENSE-pdfjs.txt`)
+- [StPageFlip](https://github.com/Nodlik/StPageFlip) by Oleg Litovski, MIT License (`LICENSE-page-flip.txt`). The copy here has a few small fixes: its animation loop sleeps when the book is still (saves battery), a drag turns the page in the direction it started, a page dragged most of the way finishes turning, and a drag that can't turn no longer freezes taps.

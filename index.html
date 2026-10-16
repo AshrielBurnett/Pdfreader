@@ -340,8 +340,8 @@ input[type=color]{width:42px;height:32px;padding:0;border:1px solid var(--ui-lin
 <div id="measure" aria-hidden="true"></div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-<script src="lib/pdf.min.js"></script>
-<script src="lib/page-flip.browser.js"></script>
+<script src="pdf.min.js"></script>
+<script src="page-flip.browser.js"></script>
 <script>
 (() => {
 'use strict';
@@ -357,10 +357,10 @@ function debounce(fn, ms){ let t; const d = (...a) => { clearTimeout(t); t = set
 function hash(s){ let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
 
 if (!window.pdfjsLib || !window.St || !window.St.PageFlip){
-  document.body.innerHTML = '<p style="padding:24px;font:16px/1.5 system-ui">Folio couldn’t load its reading engine. Check that the <b>lib</b> folder was uploaded next to index.html.</p>';
+  document.body.innerHTML = '<p style="padding:24px;font:16px/1.5 system-ui">Folio couldn’t load its reading engine. Check that all the Folio files were uploaded together, next to index.html.</p>';
   return;
 }
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'lib/pdf.worker.min.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
 
 /* ================= Settings ================= */
 const THEMES = {

@@ -1,7 +1,7 @@
 /* Folio offline helper.
    Keeps a copy of the app on the device so it opens without internet.
    Your PDFs are never sent anywhere: they stay in this browser's own storage. */
-const APP_CACHE = 'folio-app-v1';
+const APP_CACHE = 'folio-app-v2';
 const FONT_CACHE = 'folio-fonts';
 const APP_FILES = [
   './',
@@ -10,9 +10,9 @@ const APP_FILES = [
   'icon-192.png',
   'icon-512.png',
   'apple-touch-icon.png',
-  'lib/pdf.min.js',
-  'lib/pdf.worker.min.js',
-  'lib/page-flip.browser.js'
+  'pdf.min.js',
+  'pdf.worker.min.js',
+  'page-flip.browser.js'
 ];
 
 self.addEventListener('install', event => {
