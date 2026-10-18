@@ -8,11 +8,16 @@ Open any PDF and read it like a book.
 - **Your colors.** Paper, Sepia, Mist, Dusk, Night or your own page, text and desk colors. Original PDF pages can be tinted to match.
 - **A shelf.** Every PDF you open stays on the shelf with your page saved.
 - **Zoom.** The magnifier opens the current page full size for small print and charts.
+- **Read aloud.** The headphones button reads the book from the page you're on and turns pages as it goes. In Reflowed text it highlights the sentence and the word being read, and you can tap any sentence to jump there. In Original PDF the sentence shows in the top bar. Pick a voice in Reading settings:
+  - *This device · free*: your phone's or tablet's built-in voices, offline. Download a Premium or Enhanced voice (Settings → Accessibility → Spoken Content → Voices) for the most natural sound.
+  - *Natural · OpenAI*: a narrator voice from OpenAI (`gpt-4o-mini-tts`) that follows tone and punctuation, using your own API key. About US$0.015 per minute of listening.
 - **Works offline** once it has been opened one time.
 
 ## Privacy
 
 Folio is only an app. Your PDFs are never uploaded. They are stored in the browser on the device you opened them on, so a book you open on your iPad won't appear on your iPhone. Don't put private PDFs inside this GitHub repository, because a GitHub Pages site is public.
+
+Read aloud with device voices happens entirely on your device. With the OpenAI voice, the text being read is sent to OpenAI to make the audio. Your OpenAI key is saved only in the browser on that device and is never part of this repository. Never paste the key into any file here.
 
 ## Put it online with GitHub Pages
 

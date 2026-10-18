@@ -195,6 +195,26 @@ input[type=color]{width:42px;height:32px;padding:0;border:1px solid var(--ui-lin
 .zoom-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom;padding:14px max(14px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 14px) max(14px,env(safe-area-inset-left,0px))}
 #zImg{display:block;margin:0 auto;max-width:none;box-shadow:0 8px 30px rgba(0,0,0,.35);background:var(--pdf-bg)}
 
+/* Read aloud */
+#listenBtn[aria-pressed="true"]{color:var(--bar-accent);background:rgba(127,127,127,.15)}
+.cap{display:none;position:relative;font-size:13px;line-height:18px;max-height:36px;overflow:hidden;color:var(--bar-ink)}
+.cap mark{background:rgba(255,193,7,.5);color:inherit;border-radius:3px;padding:0 1px}
+#reader.listening .title-wrap>.book-name,#reader.listening .title-wrap>.book-sub{display:none}
+#reader.listening .cap{display:block}
+.player{display:none;flex:1;min-width:0;align-items:center;gap:2px}
+#reader.listening .player{display:flex}
+#reader.listening .botbar>#prev,#reader.listening .botbar>#slider,#reader.listening .botbar>#next{display:none}
+.tts-only{display:none!important}
+#reader.listening .tts-only{display:grid!important}
+.play-btn{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--bar-accent);color:var(--bar-accent-ink,#fff)}
+.rate{flex:none;min-width:54px;height:34px;margin-left:4px;padding:0 10px;border-radius:999px;border:1px solid var(--bar-line);font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--bar-ink)}
+::highlight(folio-sent){background-color:rgba(255,193,7,.26)}
+::highlight(folio-word){background-color:rgba(255,170,0,.62)}
+.pg-body .tts-cur{background:rgba(255,193,7,.22);border-radius:3px}
+.field{display:block;width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--ui-line);background:var(--ui-raise);color:var(--ui-ink);font:inherit;font-size:16px;-webkit-user-select:text;user-select:text}
+textarea.field{resize:vertical;line-height:1.4;font-size:15px}
+select.field{appearance:auto;-webkit-appearance:menulist}
+.sheet .text-btn{justify-self:start}
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 78px);transform:translate(-50%,16px);opacity:0;z-index:60;width:max-content;max-width:min(92vw,460px);padding:11px 16px;border-radius:12px;background:#1B231E;color:#EEF2EF;font-size:14px;line-height:1.4;box-shadow:0 10px 30px rgba(0,0,0,.3);transition:opacity .2s,transform .2s;pointer-events:none}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion: reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
@@ -240,7 +260,8 @@ input[type=color]{width:42px;height:32px;padding:0;border:1px solid var(--ui-lin
 <section id="reader" class="screen" hidden aria-label="Reader">
   <header class="bar topbar">
     <button id="back" class="icon-btn" type="button" aria-label="Back to shelf"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
-    <div class="title-wrap"><div id="bookName" class="book-name"></div><div id="bookSub" class="book-sub"></div></div>
+    <div class="title-wrap"><div id="bookName" class="book-name"></div><div id="bookSub" class="book-sub"></div><div id="ttsCap" class="cap"></div></div>
+    <button id="listenBtn" class="icon-btn" type="button" aria-label="Read aloud" aria-pressed="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></button>
     <button id="zoomBtn" class="icon-btn" type="button" aria-label="Zoom into this page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6"/></svg></button>
     <button id="setBtn" class="icon-btn aa" type="button" aria-label="Reading settings" aria-expanded="false">Aa</button>
   </header>
@@ -249,10 +270,18 @@ input[type=color]{width:42px;height:32px;padding:0;border:1px solid var(--ui-lin
   <div id="busy" class="busy" hidden><span class="spin" aria-hidden="true"></span><span id="busyText">Opening…</span></div>
 
   <footer class="bar botbar">
+    <div id="player" class="player">
+      <button id="ttsBack" class="icon-btn" type="button" aria-label="Back one sentence"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 20L9 12l10-8z"/><path d="M5 19V5"/></svg></button>
+      <button id="ttsPlay" class="play-btn" type="button" aria-label="Pause"><svg id="icPause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><svg id="icPlay" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M8 5v14l11-7z"/></svg></button>
+      <button id="ttsFwd" class="icon-btn" type="button" aria-label="Forward one sentence"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4l10 8-10 8z"/><path d="M19 5v14"/></svg></button>
+      <button id="ttsRate" class="rate" type="button" aria-label="Reading speed">1×</button>
+      <span style="flex:1"></span>
+    </div>
     <button id="prev" class="icon-btn" type="button" aria-label="Previous page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
     <input id="slider" type="range" min="1" max="1" value="1" step="1" aria-label="Go to page">
     <span id="pageLabel" class="page-label">1 / 1</span>
     <button id="next" class="icon-btn" type="button" aria-label="Next page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+    <button id="ttsStop" class="icon-btn tts-only" type="button" aria-label="Stop reading aloud"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </footer>
 
   <aside id="sheet" class="sheet" hidden aria-label="Reading settings">
@@ -312,6 +341,31 @@ input[type=color]{width:42px;height:32px;padding:0;border:1px solid var(--ui-lin
           <div class="seg" data-key="para" role="group" aria-label="Paragraph style"><button type="button" data-v="indent">Indented</button><button type="button" data-v="spaced">Spaced</button></div>
           <label class="row" for="headsSw">Running title and page numbers <input id="headsSw" class="switch" type="checkbox" data-key="heads"></label>
         </div>
+      </section>
+
+      <section class="grp" id="ttsGrp">
+        <h3>Read aloud</h3>
+        <p class="hint">Tap the headphones at the top to hear the book from the page you're on. While it reads in Reflowed text, tap any sentence to jump there.</p>
+        <div class="seg" data-key="ttsEngine" role="group" aria-label="Voice"><button type="button" data-v="device">This device · free</button><button type="button" data-v="openai">Natural · OpenAI</button></div>
+        <div id="ttsDevice" class="grp">
+          <label class="lbl" for="voiceSel">Voice</label>
+          <select id="voiceSel" class="field"></select>
+          <p class="hint">For the most natural sound, download a Premium or Enhanced voice on your iPhone or iPad: Settings → Accessibility → Spoken Content → Voices → English. Then reopen Folio and pick it here.</p>
+        </div>
+        <div id="ttsOpenai" class="grp">
+          <label class="lbl" for="oaKey">OpenAI API key</label>
+          <input id="oaKey" class="field" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="sk-…">
+          <p class="hint">Saved only in this browser on this device, never in your GitHub repo. Costs about US$0.015 per minute of listening (roughly $1 an hour), paid to OpenAI. Set a monthly spending limit in your OpenAI account.</p>
+          <div class="lbl">Narrator</div>
+          <div class="chips" data-key="oaVoice" id="oaVoices" role="group" aria-label="Narrator"></div>
+          <label class="lbl" for="oaStyle">How the narrator should read</label>
+          <textarea id="oaStyle" class="field" rows="4"></textarea>
+        </div>
+        <div class="lbl"><label for="rateR">Reading speed</label><output id="o-rate" for="rateR"></output></div>
+        <input id="rateR" type="range" min="0.6" max="2" step="0.05" data-key="ttsRate">
+        <label class="row" for="followSw">Turn pages as it reads <input id="followSw" class="switch" type="checkbox" data-key="ttsFollow"></label>
+        <label class="row" for="hiSw">Highlight the words being read <input id="hiSw" class="switch" type="checkbox" data-key="ttsHi"></label>
+        <button id="ttsTest" class="text-btn" type="button">Play a sample</button>
       </section>
 
       <section class="grp">
@@ -391,10 +445,15 @@ const MODE_HINT = {
   original:'Shows the PDF exactly as designed, with charts and layout intact.',
   reflow:'Pulls out the words so you can pick the font, size and spacing. Charts and pictures are left out.'
 };
+/* Read aloud: OpenAI's natural voices (gpt-4o-mini-tts). Marin and Cedar are OpenAI's best-quality voices. */
+const OA_MODEL = 'gpt-4o-mini-tts';
+const OA_VOICES = ['marin','cedar','coral','sage','ash','ballad','verse','alloy','echo','fable','nova','onyx','shimmer'];
+const OA_STYLE = 'Read like a warm, skilled audiobook narrator. Follow the punctuation: short pauses at commas, fuller pauses at full stops and paragraph ends, and a rising tone for questions. Let your tone follow the meaning and mood of the text, and keep a steady, natural pace. Read headings a little more slowly, like titles.';
 const DEFAULTS = {
   mode:'original', flip:'curl', speed:800, shadows:true, spread:'auto', cover:true,
   theme:'paper', customPage:'#FFF6E5', customText:'#2B241C', tint:true, desk:'auto', customDesk:'#34302B',
-  font:'literata', size:19, lh:1.6, margin:9, align:'justify', para:'indent', heads:true, wake:false
+  font:'literata', size:19, lh:1.6, margin:9, align:'justify', para:'indent', heads:true, wake:false,
+  ttsEngine:'device', ttsVoice:'', ttsRate:1, ttsFollow:true, ttsHi:true, oaVoice:'marin', oaStyle:OA_STYLE
 };
 const LAYOUT_KEYS = ['mode','spread','cover','flip','speed','shadows'];
 const TEXT_KEYS = ['font','size','lh','margin','align','para','heads'];
@@ -409,6 +468,10 @@ function loadSettings(){
   if (!THEMES[out.theme] && out.theme !== 'custom') out.theme = DEFAULTS.theme;
   if (!FONTS[out.font]) out.font = DEFAULTS.font;
   if (!FLIP_HINT[out.flip]) out.flip = DEFAULTS.flip;
+  if (out.ttsEngine !== 'device' && out.ttsEngine !== 'openai') out.ttsEngine = DEFAULTS.ttsEngine;
+  if (OA_VOICES.indexOf(out.oaVoice) < 0) out.oaVoice = DEFAULTS.oaVoice;
+  out.ttsRate = clamp(out.ttsRate, 0.6, 2);
+  if (!out.oaStyle.trim()) out.oaStyle = OA_STYLE;
   return out;
 }
 function saveSettings(){ try { localStorage.setItem('folio.settings', JSON.stringify(S)); } catch(e){} }
@@ -437,6 +500,7 @@ function applyColors(){
   st.setProperty('--bar-muted', deskDark ? '#9AA49F' : '#5B6760');
   st.setProperty('--bar-line', deskDark ? 'rgba(255,255,255,.08)' : 'rgba(0,0,0,.08)');
   st.setProperty('--bar-accent', deskDark ? '#7CC39E' : '#2E6A4E');
+  st.setProperty('--bar-accent-ink', deskDark ? '#0C1A12' : '#FFFFFF');
 }
 function applyType(){
   const st = document.documentElement.style;
@@ -532,6 +596,10 @@ const fresh = () => ({ rec:null, keep:false, pdf:null, n:0, ratio:0.75, title:''
 let B = fresh();
 let readerOpen = false;
 const Gesture = { moved:false };
+/* Read-aloud state. b = block (paragraph or heading), u = unit (a sentence, or a few sentences for OpenAI),
+   span = [start, end) characters of the unit inside the block's text, word = the word being spoken. */
+const TTS = { on:false, playing:false, b:0, u:0, span:[0, 0], word:null, token:0, units:new Map(),
+  audio:null, oaCache:new Map(), fellBack:false, primed:false, unlocked:false, utter:null };
 
 /* ================= Spreads ================= */
 function spreadsFor(n, spread, cover){
@@ -874,7 +942,8 @@ function pieceHTML(pc){
   if (pc.w1 != null) cls.push('split');
   if (pc.first) cls.push('first');
   const tag = b.t === 'h' ? 'h3' : 'p';
-  return `<${tag}${cls.length ? ` class="${cls.join(' ')}"` : ''}>${esc(text)}</${tag}>`;
+  /* data-b and data-w0 tell read-aloud which paragraph and word each piece starts at, for highlighting and tap-to-jump. */
+  return `<${tag}${cls.length ? ` class="${cls.join(' ')}"` : ''} data-b="${pc.b}" data-w0="${pc.w0}">${esc(text)}</${tag}>`;
 }
 async function ensureFont(){
   if (!document.fonts || !document.fonts.load) return;
@@ -1095,8 +1164,9 @@ function swapIn(pages, L, map){
   fadeIn();
   updateLabels(); updateTools();
   clearTimeout(autoHide);
-  if (reader.classList.contains('compact')) autoHide = setTimeout(() => { if (sheet.hidden) toggleChrome(true); }, 2200);
+  if (reader.classList.contains('compact') && !TTS.on) autoHide = setTimeout(() => { if (sheet.hidden) toggleChrome(true); }, 2200);
   scheduleRender(B.cur);
+  if (TTS.on) ttsAfterBuild();
 }
 function fadeIn(){ stage.style.transition = 'none'; stage.style.opacity = '0'; void stage.offsetWidth; stage.style.transition = ''; stage.style.opacity = ''; }
 function onPage(idx){
@@ -1104,6 +1174,7 @@ function onPage(idx){
   if (idx !== B.cur){ B.cur = idx; B.pos = posFor(idx); savePos(); }
   updateLabels();
   scheduleRender(idx);
+  ttsOnPage();
 }
 
 /* ================= Reader chrome ================= */
@@ -1153,9 +1224,12 @@ stage.addEventListener('pointerup', e => {
   const r = stage.getBoundingClientRect();
   const fx = (e.clientX - r.left) / r.width;
   const before = B.engine ? B.engine.current() : -1;
+  const target = e.target, tx = e.clientX, ty = e.clientY;
   setTimeout(() => {
     const en = B.engine;
     if (!en || en.busy() || en.current() !== before) return;
+    /* While reading aloud, a tap on the text jumps the reading there. */
+    if (TTS.on && ttsTapJump(target, tx, ty)) return;
     if (fx < 0.3) en.prev();
     else if (fx > 0.7) en.next();
     else toggleChrome();
@@ -1173,6 +1247,7 @@ document.addEventListener('keydown', e => {
   const tag = e.target && e.target.tagName;
   if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
   if (e.target.closest && e.target.closest('#sheet')) return;
+  if (e.key === ' ' && TTS.on){ ttsToggle(); e.preventDefault(); return; }
   if (e.key === 'ArrowRight' || e.key === 'PageDown'){ nav(1); e.preventDefault(); }
   else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){ nav(-1); e.preventDefault(); }
   else if (e.key === ' '){ nav(e.shiftKey ? -1 : 1); e.preventDefault(); }
@@ -1200,12 +1275,16 @@ function savePosNow(){
   if (B.keep) store.put('books', B.rec).catch(() => {});
 }
 const savePos = debounce(savePosNow, 500);
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && readerOpen){ savePos.cancel(); savePosNow(); } setWake(); });
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && readerOpen){ savePos.cancel(); savePosNow(); }
+  if (document.visibilityState === 'visible') ttsResumeAfterHidden();
+  setWake();
+});
 
 let wakeLock = null;
 async function setWake(){
   try {
-    const want = S.wake && readerOpen && document.visibilityState === 'visible' && 'wakeLock' in navigator;
+    const want = (S.wake || (TTS.on && TTS.playing)) && readerOpen && document.visibilityState === 'visible' && 'wakeLock' in navigator;
     if (want && !wakeLock){ wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => { wakeLock = null; }); }
     else if (!want && wakeLock){ const w = wakeLock; wakeLock = null; await w.release(); }
   } catch(e){ wakeLock = null; }
@@ -1297,6 +1376,7 @@ function showReader(){
 }
 function closeReader(silent){
   if (!readerOpen) return;
+  ttsStop();
   readerOpen = false;
   savePos.cancel(); savePosNow();
   buildToken++;
@@ -1379,12 +1459,14 @@ function buildPickers(){
     Object.entries(DESKS).map(([k, c]) => `<button type="button" data-v="${k}"><span class="sw" style="--sw-bg:${c}"></span>${k[0].toUpperCase() + k.slice(1)}</button>`).join('') +
     `<button type="button" data-v="custom"><span class="sw" id="swDeskCustom"></span>Custom</button>`;
   $('#fontList').innerHTML = Object.entries(FONTS).map(([k, f]) => `<button type="button" data-v="${k}" style="font-family:${f.css.replace(/"/g, '&quot;')}">${f.name}</button>`).join('');
+  $('#oaVoices').innerHTML = OA_VOICES.map(v => `<button type="button" data-v="${v}">${v[0].toUpperCase() + v.slice(1)}</button>`).join('');
 }
 function syncOutputs(){
   $('#o-speed').textContent = (S.speed / 1000).toFixed(2) + ' s';
   $('#o-size').textContent = S.size + ' px';
   $('#o-lh').textContent = Number(S.lh).toFixed(2);
   $('#o-margin').textContent = S.margin + '%';
+  $('#o-rate').textContent = rateText(S.ttsRate);
 }
 function syncControls(){
   $$('#sheet [data-key]').forEach(ctrl => {
@@ -1403,6 +1485,13 @@ function syncControls(){
   $('#typeGrp').classList.toggle('dim', S.mode !== 'reflow');
   $('#typeHint').hidden = S.mode === 'reflow';
   $('#tintRow').classList.toggle('dim', S.mode !== 'original');
+  $('#ttsDevice').hidden = S.ttsEngine !== 'device';
+  $('#ttsOpenai').hidden = S.ttsEngine !== 'openai';
+  const ks = $('#oaKey'), st = $('#oaStyle');
+  if (document.activeElement !== ks) ks.value = getKey();
+  if (document.activeElement !== st) st.value = S.oaStyle;
+  fillVoices();
+  $('#ttsRate').textContent = rateText(S.ttsRate);
 }
 function setSetting(k, v){
   S[k] = v;
@@ -1412,6 +1501,7 @@ function setSetting(k, v){
   if (COLOR_KEYS.indexOf(k) >= 0){ applyColors(); rerenderSoon(); }
   if (k === 'font' || k === 'size' || k === 'lh') applyType();
   if (k === 'wake') setWake();
+  if (/^(tts|oa)/.test(k)) ttsSettingChanged(k);
   if (!readerOpen) return;
   if (LAYOUT_KEYS.indexOf(k) >= 0 || (TEXT_KEYS.indexOf(k) >= 0 && S.mode === 'reflow')) rebuildSoon();
 }
@@ -1438,9 +1528,18 @@ function bindControls(){
       ctrl.addEventListener('input', () => setSetting(k, ctrl.value));
     }
   });
+  $('#voiceSel').addEventListener('change', e => setSetting('ttsVoice', e.target.value));
+  $('#oaKey').addEventListener('change', e => {
+    const v = e.target.value.trim(); setKey(v); TTS.fellBack = false;
+    toast(v ? 'Key saved in this browser only.' : 'Key removed from this device.');
+    ttsSettingChanged('ttsEngine');
+  });
+  $('#oaStyle').addEventListener('change', e => { S.oaStyle = e.target.value.trim() || OA_STYLE; saveSettings(); syncControls(); });
+  $('#ttsTest').addEventListener('click', ttsSample);
   $('#reset').addEventListener('click', () => {
     S = Object.assign({}, DEFAULTS);
     saveSettings(); applyColors(); applyType(); syncControls(); setWake();
+    if (TTS.on) ttsSettingChanged('ttsEngine');
     if (readerOpen){ rebuildSoon(); rerenderSoon(); }
     toast('Reading settings are back to the defaults.');
   });
@@ -1488,6 +1587,500 @@ $('#zIn').addEventListener('click', () => zoomBy(1));
 $('#zOut').addEventListener('click', () => zoomBy(-1));
 $('#zPrev').addEventListener('click', () => { if (Z.page > 0){ Z.page--; renderZoom(); } });
 $('#zNext').addEventListener('click', () => { if (Z.page < B.n - 1){ Z.page++; renderZoom(); } });
+
+/* ================= Read aloud ================= */
+/* Two voices: this device's built-in voices (free, offline) or OpenAI's natural narrator voices (your own key).
+   The text comes from the same paragraphs Reflowed text uses, so it works in both layouts.
+   Reflowed text highlights the sentence and word on the page; Original PDF shows them in the top bar. */
+const synth = ('speechSynthesis' in window) ? window.speechSynthesis : null;
+const HL = !!(window.CSS && CSS.highlights && window.Highlight);
+const SEG = (window.Intl && Intl.Segmenter) ? new Intl.Segmenter(undefined, { granularity:'sentence' }) : null;
+const RATES = [0.8, 1, 1.15, 1.3, 1.5, 1.75, 2];
+const SAMPLE = 'This is how Folio will read your books. Questions should sound like questions, shouldn’t they? And every full stop gets a natural pause.';
+function rateText(r){ return (Math.round(r * 100) / 100) + '×'; }
+function getKey(){ try { return localStorage.getItem('folio.oaKey') || ''; } catch(e){ return ''; } }
+function setKey(v){ try { if (v) localStorage.setItem('folio.oaKey', v); else localStorage.removeItem('folio.oaKey'); } catch(e){} }
+function engineNow(){ return S.ttsEngine === 'openai' && getKey() && !TTS.fellBack ? 'openai' : 'device'; }
+
+/* ---- Device voices: best natural-sounding English voice first ---- */
+let voiceList = [];
+const ROBOTIC = /\b(compact|eloquence|albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|ralph|kathy|grandma|grandpa|rocko|sandy|shelley|flo|eddy|reed)\b/i;
+function voiceRank(v){
+  let r = 0;
+  const n = v.name || '';
+  if (/^en([-_]|$)/i.test(v.lang || '')) r += 100;
+  if (/premium/i.test(n)) r += 50; else if (/enhanced/i.test(n)) r += 40; else if (/natural|neural/i.test(n)) r += 36; else if (/siri/i.test(n)) r += 30;
+  if (!v.localService) r += 6;
+  if (/en[-_](US|GB)/i.test(v.lang || '')) r += 3;
+  if (v.default) r += 1;
+  if (ROBOTIC.test(n)) r -= 70;
+  return r;
+}
+function loadVoices(){ if (!synth) return; try { voiceList = (synth.getVoices() || []).slice().sort((a, b) => voiceRank(b) - voiceRank(a) || a.name.localeCompare(b.name)); } catch(e){ voiceList = []; } }
+function pickVoice(){
+  if (!voiceList.length) loadVoices();
+  if (S.ttsVoice){ const v = voiceList.find(x => x.voiceURI === S.ttsVoice); if (v) return v; }
+  return voiceList[0] || null;
+}
+function fillVoices(){
+  const sel = $('#voiceSel'); if (!sel) return;
+  if (!synth){ sel.innerHTML = '<option>This browser has no built-in voices</option>'; sel.disabled = true; return; }
+  if (!voiceList.length) loadVoices();
+  const en = voiceList.filter(v => /^en/i.test(v.lang || '')), other = voiceList.filter(v => !/^en/i.test(v.lang || ''));
+  const opt = v => `<option value="${esc(v.voiceURI)}">${esc(v.name)} · ${esc(v.lang)}</option>`;
+  const best = voiceList[0];
+  const html = `<option value="">Best available${best ? ` (${esc(best.name)})` : ''}</option>` +
+    (en.length ? `<optgroup label="English">${en.map(opt).join('')}</optgroup>` : '') +
+    (other.length ? `<optgroup label="Other languages">${other.map(opt).join('')}</optgroup>` : '');
+  if (sel.dataset.sig !== String(voiceList.length) + html.length){ sel.innerHTML = html; sel.dataset.sig = String(voiceList.length) + html.length; }
+  sel.value = voiceList.some(v => v.voiceURI === S.ttsVoice) ? S.ttsVoice : '';
+}
+if (synth){ loadVoices(); try { synth.addEventListener('voiceschanged', () => { loadVoices(); fillVoices(); }); } catch(e){ synth.onvoiceschanged = () => { loadVoices(); fillVoices(); }; } }
+
+/* ---- Sentences and units ---- */
+function wordStarts(blk){
+  if (blk.ws) return blk.ws;
+  const ws = wordsOf(blk), out = new Array(ws.length);
+  let c = 0;
+  for (let i = 0; i < ws.length; i++){ out[i] = c; c += ws[i].length + 1; }
+  return (blk.ws = out);
+}
+function charOfWord(blk, w){ const s = wordStarts(blk); return w <= 0 ? 0 : w >= s.length ? blk.text.length : s[w]; }
+function wordAtChar(blk, c){ const s = wordStarts(blk); let lo = 0, hi = s.length - 1; while (lo < hi){ const m = (lo + hi + 1) >> 1; if (s[m] <= c) lo = m; else hi = m - 1; } return lo; }
+function sentenceSpans(text){
+  const raw = [];
+  if (SEG){ for (const s of SEG.segment(text)) raw.push([s.index, s.index + s.segment.length]); }
+  else {
+    let a = 0;
+    const re = /[.!?…]+["”’)\]]*\s+(?=["“‘(\[]?[A-Z0-9])/g; let m;
+    while ((m = re.exec(text))){ raw.push([a, m.index + m[0].length]); a = m.index + m[0].length; }
+    if (a < text.length) raw.push([a, text.length]);
+  }
+  const out = [];
+  for (let [a, e] of raw){ while (e > a && /\s/.test(text[e - 1])) e--; while (a < e && /\s/.test(text[a])) a++; if (e > a) out.push([a, e]); }
+  return out;
+}
+function splitLong(text, a, e, max, out){
+  while (e - a > max){
+    const part = text.slice(a, a + max);
+    let cut = Math.max(part.lastIndexOf(', '), part.lastIndexOf('; '), part.lastIndexOf(': '), part.lastIndexOf(' — '), part.lastIndexOf(' – '));
+    if (cut < max * 0.4) cut = part.lastIndexOf(' ');
+    if (cut <= 0) cut = max; else cut += 1;
+    out.push([a, a + cut]);
+    a += cut;
+    while (a < e && text[a] === ' ') a++;
+  }
+  if (e > a) out.push([a, e]);
+}
+/* Device voices read one sentence at a time (keeps word highlighting in step and avoids browsers cutting off long speech).
+   OpenAI reads a few sentences per request, so the narrator hears enough context to get the tone right. */
+function unitsFor(b){
+  const eng = engineNow(), key = b + '|' + eng;
+  let u = TTS.units.get(key);
+  if (u) return u;
+  const blk = B.blocks[b], text = blk.text;
+  const sents = sentenceSpans(text), out = [];
+  if (eng === 'openai'){
+    const MAX = 560;
+    let a = -1, e = -1;
+    for (const [s0, s1] of sents){
+      if (s1 - s0 > MAX){ if (a >= 0) out.push([a, e]); a = -1; splitLong(text, s0, s1, MAX, out); continue; }
+      if (a < 0){ a = s0; e = s1; } else if (s1 - a <= MAX) e = s1; else { out.push([a, e]); a = s0; e = s1; }
+    }
+    if (a >= 0) out.push([a, e]);
+  } else {
+    for (const [s0, s1] of sents) splitLong(text, s0, s1, 240, out);
+  }
+  if (!out.length) out.push([0, text.length]);
+  TTS.units.set(key, out);
+  return out;
+}
+function unitAt(b, c){
+  const us = unitsFor(b);
+  for (let i = 0; i < us.length; i++) if (c < us[i][1]) return i;
+  return us.length - 1;
+}
+
+/* ---- Where the reading is, in page terms ---- */
+function visibleRange(){
+  const L = B.layout, n = B.pages.length;
+  let a = B.cur, z = B.cur;
+  if (L && L.spread){ const sp = spreadsFor(n, true, L.cover).find(s => s.indexOf(B.cur) >= 0); if (sp){ a = sp[0]; z = sp[sp.length - 1]; } }
+  return [a, z];
+}
+function pageOfChar(b, c){
+  const L = B.layout;
+  if (L && L.mode === 'reflow' && B.map) return reflowIndexFor({ b, w:wordAtChar(B.blocks[b], c) });
+  return B.blocks[b].sp;
+}
+function startPosForPage(){
+  const [a] = visibleRange(), L = B.layout;
+  if (L && L.mode === 'reflow' && B.map && B.map[a]){ const e = B.map[a]; return { b:e.b, c:charOfWord(B.blocks[e.b], e.w) }; }
+  const b = firstBlockOnPage(a);
+  if (B.blocks[b] && B.blocks[b].sp < a) return null;   // no text from here to the end
+  return { b, c:0 };
+}
+function setPos(b, c){
+  const us = unitsFor(b), u = unitAt(b, c);
+  TTS.b = b; TTS.u = u; TTS.span = us[u].slice(); TTS.word = null;
+}
+
+/* ---- Showing the reading: highlight on the page, caption in the top bar ---- */
+function clearHighlight(){
+  if (HL){ CSS.highlights.delete('folio-sent'); CSS.highlights.delete('folio-word'); }
+  $$('.tts-cur', stage).forEach(el => el.classList.remove('tts-cur'));
+}
+function rangesFor(b, c0, c1){
+  const out = [], blk = B.blocks[b];
+  for (const el of stage.querySelectorAll(`.pg-body [data-b="${b}"]`)){
+    const tn = el.firstChild;
+    if (!tn || tn.nodeType !== 3) continue;
+    const s0 = charOfWord(blk, +el.dataset.w0), s1 = s0 + tn.length;
+    const a = Math.max(c0, s0), z = Math.min(c1, s1);
+    if (a < z){ const r = document.createRange(); r.setStart(tn, a - s0); r.setEnd(tn, z - s0); out.push(r); }
+  }
+  return out;
+}
+function paintWord(){
+  if (!HL) return;
+  CSS.highlights.delete('folio-word');
+  if (!TTS.on || !S.ttsHi || !TTS.word || !B.layout || B.layout.mode !== 'reflow') return;
+  const w = rangesFor(TTS.b, TTS.word[0], TTS.word[1]);
+  if (w.length) CSS.highlights.set('folio-word', new Highlight(...w));
+}
+function paint(){
+  clearHighlight();
+  if (TTS.on && S.ttsHi && B.layout && B.layout.mode === 'reflow' && B.blocks && B.blocks[TTS.b]){
+    if (HL){ const s = rangesFor(TTS.b, TTS.span[0], TTS.span[1]); if (s.length) CSS.highlights.set('folio-sent', new Highlight(...s)); paintWord(); }
+    else stage.querySelectorAll(`.pg-body [data-b="${TTS.b}"]`).forEach(el => el.classList.add('tts-cur'));
+  }
+  caption();
+}
+function caption(){
+  const cap = $('#ttsCap');
+  const blk = B.blocks && B.blocks[TTS.b];
+  if (!TTS.on || !blk){ cap.textContent = ''; return; }
+  const t = blk.text, [a, e] = TTS.span, w = TTS.word;
+  if (w && w[0] >= a && w[1] <= e) cap.innerHTML = esc(t.slice(a, w[0])) + '<mark>' + esc(t.slice(w[0], w[1])) + '</mark>' + esc(t.slice(w[1], e));
+  else cap.textContent = t.slice(a, e);
+  const m = cap.querySelector('mark');
+  cap.scrollTop = m ? Math.max(0, Math.floor(m.offsetTop / 18) * 18 - 18) : 0;
+}
+function markWord(c0, c1){
+  if (TTS.word && TTS.word[0] === c0 && TTS.word[1] === c1) return;
+  TTS.word = [c0, c1];
+  paintWord(); caption();
+  /* In Reflowed text a sentence can run onto the next page: turn as soon as the spoken word gets there. */
+  if (S.ttsFollow && B.engine && B.layout && B.layout.mode === 'reflow' && !B.engine.busy()){
+    const p = pageOfChar(TTS.b, c0), [, z] = visibleRange();
+    if (p === z + 1) B.engine.next();
+  }
+}
+/* Turn the page when the reading moves past what's on screen. */
+function follow(){
+  if (!S.ttsFollow || !B.engine || !B.layout) return;
+  const p = pageOfChar(TTS.b, TTS.span[0]), [x, z] = visibleRange();
+  if (p >= x && p <= z) return;
+  if (p === z + 1) B.engine.next(); else B.engine.goTo(p);
+}
+/* Is any part of the sentence being read on screen? */
+function readingVisible(){
+  const [x, z] = visibleRange();
+  const p0 = pageOfChar(TTS.b, TTS.span[0]), p1 = pageOfChar(TTS.b, Math.max(TTS.span[0], TTS.span[1] - 1));
+  return p0 <= z && p1 >= x;
+}
+function ttsOnPage(){
+  if (!TTS.on || !B.blocks || !B.layout) return;
+  if (readingVisible()){ paint(); return; }
+  /* You turned to a different page: the reading moves there with you. */
+  const pos = startPosForPage();
+  if (!pos){ pause(); return; }
+  setPos(pos.b, pos.c);
+  if (TTS.playing) restart(); else paint();
+}
+function ttsAfterBuild(){ paint(); }
+
+/* ---- Playback ---- */
+function silentWav(){
+  const n = 1600, buf = new ArrayBuffer(44 + n * 2), d = new DataView(buf);
+  const w = (o, s) => { for (let i = 0; i < s.length; i++) d.setUint8(o + i, s.charCodeAt(i)); };
+  w(0, 'RIFF'); d.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt ');
+  d.setUint32(16, 16, true); d.setUint16(20, 1, true); d.setUint16(22, 1, true); d.setUint32(24, 16000, true);
+  d.setUint32(28, 32000, true); d.setUint16(32, 2, true); d.setUint16(34, 16, true); w(36, 'data'); d.setUint32(40, n * 2, true);
+  return URL.createObjectURL(new Blob([buf], { type:'audio/wav' }));
+}
+/* iPhone and iPad only allow sound that starts from a tap, so every tap that starts reading "unlocks" audio first. */
+function unlockAudio(){
+  if (!TTS.audio){ TTS.audio = new Audio(); TTS.audio.preload = 'auto'; }
+  if (!TTS.unlocked && S.ttsEngine === 'openai' && getKey()){
+    try { TTS.audio.src = silentWav(); const p = TTS.audio.play(); if (p && p.catch) p.catch(() => {}); TTS.unlocked = true; } catch(e){}
+  }
+  if (!TTS.primed && synth){
+    try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; synth.speak(u); TTS.primed = true; } catch(e){}
+  }
+}
+function updatePlayUI(){
+  $('#icPause').hidden = !TTS.playing; $('#icPlay').hidden = TTS.playing;
+  $('#ttsPlay').setAttribute('aria-label', TTS.playing ? 'Pause' : 'Play');
+  $('#listenBtn').setAttribute('aria-pressed', String(TTS.on));
+  $('#listenBtn').setAttribute('aria-label', TTS.on ? 'Stop reading aloud' : 'Read aloud');
+  $('#ttsRate').textContent = rateText(S.ttsRate);
+  try { if ('mediaSession' in navigator) navigator.mediaSession.playbackState = TTS.on ? (TTS.playing ? 'playing' : 'paused') : 'none'; } catch(e){}
+}
+function hush(){
+  if (synth && (synth.speaking || synth.pending)) synth.cancel();
+  if (TTS.audio && !TTS.audio.paused) TTS.audio.pause();
+}
+function play(){
+  if (!TTS.on) return;
+  TTS.playing = true; updatePlayUI(); setWake();
+  const tok = ++TTS.token;
+  const au = TTS.audio;
+  /* Resume a paused OpenAI clip where it stopped, instead of re-reading the whole chunk. */
+  if (engineNow() === 'openai' && au && TTS.loaded && TTS.loaded.b === TTS.b && TTS.loaded.u === TTS.u && au.currentTime > 0 && !au.ended){
+    bindAudio(tok, au);
+    au.play().catch(() => { if (tok === TTS.token){ pause(); toast('Tap play to start listening.'); } });
+    return;
+  }
+  speakCurrent(tok);
+}
+function pause(){ TTS.playing = false; TTS.token++; hush(); updatePlayUI(); setWake(); }
+function restart(){ TTS.loaded = null; if (TTS.playing){ hush(); const tok = ++TTS.token; speakCurrent(tok); } else paint(); }
+function ttsToggle(){ unlockAudio(); if (TTS.playing) pause(); else play(); }
+function speakCurrent(tok){
+  if (tok !== TTS.token) return;
+  if (!B.blocks || !B.blocks[TTS.b]){ ttsEnd(); return; }
+  const us = unitsFor(TTS.b);
+  if (TTS.u >= us.length){ TTS.b++; TTS.u = 0; return speakCurrent(tok); }
+  TTS.span = us[TTS.u].slice(); TTS.word = null;
+  follow(); paint();
+  const text = B.blocks[TTS.b].text.slice(TTS.span[0], TTS.span[1]);
+  if (engineNow() === 'openai') speakOA(tok, text, TTS.span[0]); else speakDevice(tok, text, TTS.span[0]);
+}
+function advance(tok){
+  if (tok !== TTS.token || !TTS.playing) return;
+  TTS.u++;
+  if (TTS.u >= unitsFor(TTS.b).length){
+    TTS.b++; TTS.u = 0;
+    if (!B.blocks || TTS.b >= B.blocks.length){ ttsEnd(); return; }
+  }
+  speakCurrent(tok);
+}
+function speakDevice(tok, text, a){
+  if (!synth){ toast('This browser can’t read aloud with its own voices.'); ttsStop(); return; }
+  const u = new SpeechSynthesisUtterance(text);
+  const v = pickVoice();
+  if (v){ u.voice = v; u.lang = v.lang; }
+  u.rate = S.ttsRate;
+  u.onboundary = ev => {
+    if (tok !== TTS.token || (ev.name && ev.name !== 'word')) return;
+    const ci = ev.charIndex || 0;
+    let len = ev.charLength;
+    if (!len){ const m = /^[^\s]+/.exec(text.slice(ci)); len = m ? m[0].length : 0; }
+    if (len) markWord(a + ci, a + ci + len);
+  };
+  u.onend = () => advance(tok);
+  u.onerror = ev => {
+    if (tok !== TTS.token) return;
+    if (ev.error === 'interrupted' || ev.error === 'canceled') return;
+    if (ev.error === 'not-allowed'){ pause(); toast('Tap play to start reading.'); return; }
+    advance(tok);
+  };
+  TTS.utter = u;   // keeps the utterance alive (some browsers drop its events otherwise)
+  const go = () => { if (tok !== TTS.token) return; if (synth.paused) synth.resume(); synth.speak(u); };
+  if (synth.speaking || synth.pending){ synth.cancel(); setTimeout(go, 60); } else go();
+}
+
+/* ---- OpenAI natural voice ---- */
+function oaAudio(text){
+  const key = S.oaVoice + '|' + S.oaStyle + '|' + text;
+  let p = TTS.oaCache.get(key);
+  if (p) return p;
+  p = fetch('https://api.openai.com/v1/audio/speech', {
+    method:'POST',
+    headers:{ 'Authorization':'Bearer ' + getKey(), 'Content-Type':'application/json' },
+    body:JSON.stringify({ model:OA_MODEL, voice:S.oaVoice, input:text, instructions:S.oaStyle, response_format:'mp3' })
+  }).then(async r => {
+    if (!r.ok){
+      let msg = '';
+      try { const j = await r.json(); msg = (j && j.error && j.error.message) || ''; } catch(e){}
+      const err = new Error(msg || ('HTTP ' + r.status)); err.status = r.status; throw err;
+    }
+    return URL.createObjectURL(await r.blob());
+  });
+  p.catch(() => TTS.oaCache.delete(key));
+  TTS.oaCache.set(key, p);
+  while (TTS.oaCache.size > 40){
+    const [k0, p0] = TTS.oaCache.entries().next().value;
+    TTS.oaCache.delete(k0);
+    p0.then(u => setTimeout(() => URL.revokeObjectURL(u), 60000)).catch(() => {});
+  }
+  return p;
+}
+function nextUnits(count){
+  const out = [];
+  let b = TTS.b, u = TTS.u;
+  while (out.length < count && B.blocks){
+    u++;
+    if (u >= unitsFor(b).length){ b++; u = 0; if (b >= B.blocks.length) break; }
+    const [s0, s1] = unitsFor(b)[u];
+    out.push(B.blocks[b].text.slice(s0, s1));
+  }
+  return out;
+}
+function bindAudio(tok, au){
+  const [a, e] = TTS.span;
+  const text = B.blocks[TTS.b].text.slice(a, e);
+  au.onended = () => advance(tok);
+  au.onerror = () => { if (tok === TTS.token) advance(tok); };
+  /* OpenAI doesn't say when each word is spoken, so the word highlight follows the clip's progress through the text. */
+  au.ontimeupdate = () => {
+    if (tok !== TTS.token || !au.duration || !isFinite(au.duration)) return;
+    const c = Math.min(text.length - 1, Math.floor(text.length * au.currentTime / au.duration));
+    let s = c; while (s > 0 && text[s - 1] !== ' ') s--;
+    let z = c; while (z < text.length && text[z] !== ' ') z++;
+    if (z > s) markWord(a + s, a + z);
+  };
+}
+async function speakOA(tok, text, a){
+  let url;
+  try { url = await oaAudio(text); }
+  catch(err){ if (tok === TTS.token) oaFailed(err); return; }
+  if (tok !== TTS.token) return;
+  const au = TTS.audio;
+  bindAudio(tok, au);
+  if (au.src !== url) au.src = url;
+  au.defaultPlaybackRate = S.ttsRate; au.playbackRate = S.ttsRate;
+  try { au.preservesPitch = true; } catch(e){}
+  TTS.loaded = { b:TTS.b, u:TTS.u };
+  try { await au.play(); }
+  catch(err){ if (tok === TTS.token){ pause(); toast('Tap play to start listening.'); } return; }
+  for (const t of nextUnits(2)) oaAudio(t).catch(() => {});
+}
+function oaFailed(err){
+  const s = err && err.status;
+  const why = s === 401 ? 'OpenAI didn’t accept your API key. Check it in Reading settings.'
+    : s === 429 ? 'OpenAI says you’ve hit a limit or run out of credit.'
+    : s ? `OpenAI couldn’t read this (${err.message}).`
+    : 'Couldn’t reach OpenAI. Check your internet connection.';
+  toast(why + ' Using this device’s voice for now.');
+  TTS.fellBack = true;
+  const c = TTS.span[0];
+  setPos(TTS.b, c);
+  restart();
+}
+
+/* ---- Start, stop, jump ---- */
+function setupMediaSession(){
+  if (!('mediaSession' in navigator)) return;
+  try {
+    navigator.mediaSession.metadata = new MediaMetadata({ title:B.title, artist:'Folio',
+      artwork:(B.rec && typeof B.rec.cover === 'string') ? [{ src:B.rec.cover, sizes:'360x480', type:'image/jpeg' }] : [] });
+    const h = (a, f) => { try { navigator.mediaSession.setActionHandler(a, f); } catch(e){} };
+    h('play', () => play()); h('pause', () => pause());
+    h('previoustrack', () => skip(-1)); h('nexttrack', () => skip(1)); h('stop', () => ttsStop());
+  } catch(e){}
+}
+async function ttsStart(pos){
+  if (!B.pdf || !B.layout) return;
+  unlockAudio();
+  const pdf = B.pdf;
+  if (B.textState !== 'ready'){
+    setBusy('Preparing text…');
+    await ensureText();
+    if (B.pdf !== pdf || !readerOpen) return;
+    hideBusy();
+    if (B.textState !== 'ready'){ toast('This PDF has no text to read aloud. It’s probably a scanned book.'); return; }
+  }
+  pos = pos || startPosForPage();
+  if (!pos){ toast('There’s no text from this page to the end.'); return; }
+  if (S.ttsEngine === 'openai' && !getKey()) toast('Add your OpenAI key in Reading settings for the natural voice. Using this device’s voice for now.');
+  TTS.units.clear(); TTS.loaded = null;
+  TTS.on = true;
+  reader.classList.add('listening'); reader.classList.remove('chrome-off'); clearTimeout(autoHide);
+  setPos(pos.b, pos.c);
+  setupMediaSession();
+  play();
+}
+function ttsStop(){
+  if (!TTS.on && !TTS.playing) return;
+  TTS.on = false; TTS.playing = false; TTS.token++; TTS.loaded = null;
+  hush(); clearHighlight();
+  reader.classList.remove('listening');
+  $('#ttsCap').textContent = '';
+  updatePlayUI(); setWake();
+  try { if ('mediaSession' in navigator) navigator.mediaSession.metadata = null; } catch(e){}
+}
+function ttsEnd(){ ttsStop(); toast('That’s the end of the book.'); }
+function skip(dir){
+  if (!TTS.on || !B.blocks) return;
+  let b = TTS.b, u = TTS.u + dir;
+  if (u < 0){ if (b === 0) u = 0; else { b--; u = unitsFor(b).length - 1; } }
+  else if (u >= unitsFor(b).length){ if (b + 1 >= B.blocks.length) return; b++; u = 0; }
+  TTS.b = b; TTS.u = u; TTS.span = unitsFor(b)[u].slice(); TTS.word = null;
+  if (TTS.playing) restart(); else { follow(); paint(); }
+}
+function caretAt(x, y){
+  try {
+    if (document.caretPositionFromPoint){ const p = document.caretPositionFromPoint(x, y); if (p) return { node:p.offsetNode, offset:p.offset }; }
+    if (document.caretRangeFromPoint){ const r = document.caretRangeFromPoint(x, y); if (r) return { node:r.startContainer, offset:r.startOffset }; }
+  } catch(e){}
+  return null;
+}
+function ttsTapJump(target, x, y){
+  const el = target && target.closest ? target.closest('.pg-body [data-b]') : null;
+  if (!el || !B.blocks) return false;
+  const b = +el.dataset.b, blk = B.blocks[b];
+  if (!blk) return false;
+  let c = charOfWord(blk, +el.dataset.w0);
+  const cr = caretAt(x, y);
+  if (cr && cr.node && cr.node.nodeType === 3 && cr.node.parentNode === el) c += cr.offset;
+  unlockAudio();
+  setPos(b, c);
+  if (TTS.playing) restart(); else play();
+  return true;
+}
+function ttsSettingChanged(k){
+  if (k === 'ttsEngine'){ TTS.fellBack = false; TTS.unlocked = false; }
+  updatePlayUI();
+  if (k === 'ttsRate'){ if (TTS.audio){ TTS.audio.defaultPlaybackRate = S.ttsRate; TTS.audio.playbackRate = S.ttsRate; } if (engineNow() === 'device' && TTS.playing) restartAtUnit(); return; }
+  if (k === 'ttsHi'){ paint(); return; }
+  if (k === 'ttsFollow'){ if (S.ttsFollow && TTS.on) follow(); return; }
+  if (TTS.on) restartAtUnit();
+}
+function restartAtUnit(){ if (!TTS.on || !B.blocks) return; setPos(TTS.b, TTS.span[0]); restart(); }
+function ttsResumeAfterHidden(){
+  /* iPhone and iPad stop built-in speech when Folio goes to the background. Pick up the sentence again on return. */
+  if (TTS.on && TTS.playing && engineNow() === 'device' && synth && !synth.speaking) restart();
+}
+function ttsSample(){
+  unlockAudio();
+  if (TTS.on && TTS.playing) pause();
+  const tok = ++TTS.token;
+  if (engineNow() === 'openai'){
+    oaAudio(SAMPLE).then(url => { if (tok !== TTS.token) return; const au = TTS.audio; au.onended = au.onerror = au.ontimeupdate = null; au.src = url; au.playbackRate = S.ttsRate; return au.play(); })
+      .catch(err => { if (tok === TTS.token) toast(err && err.status === 401 ? 'OpenAI didn’t accept your API key.' : 'Couldn’t play the OpenAI sample. Check your key and connection.'); });
+    return;
+  }
+  if (!synth){ toast('This browser can’t read aloud with its own voices.'); return; }
+  synth.cancel();
+  const u = new SpeechSynthesisUtterance(SAMPLE), v = pickVoice();
+  if (v){ u.voice = v; u.lang = v.lang; }
+  u.rate = S.ttsRate;
+  TTS.utter = u;
+  setTimeout(() => synth.speak(u), 60);
+}
+
+$('#listenBtn').addEventListener('click', () => { if (TTS.on) ttsStop(); else ttsStart(); });
+$('#ttsPlay').addEventListener('click', ttsToggle);
+$('#ttsStop').addEventListener('click', ttsStop);
+$('#ttsBack').addEventListener('click', () => { unlockAudio(); skip(-1); });
+$('#ttsFwd').addEventListener('click', () => { unlockAudio(); skip(1); });
+$('#ttsRate').addEventListener('click', () => {
+  const r = RATES.find(x => x > S.ttsRate + 0.001) || RATES[0];
+  setSetting('ttsRate', r);
+  toast('Reading speed ' + rateText(r));
+});
 
 /* Re-lay reflowed text if its web font finishes loading after the first layout. */
 if (document.fonts && document.fonts.addEventListener){
