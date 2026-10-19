@@ -1,7 +1,8 @@
 /* Folio offline helper.
    Keeps a copy of the app on the device so it opens without internet.
    Your PDFs are never sent anywhere: they stay in this browser's own storage. */
-const APP_CACHE = 'folio-app-v5';
+/* Change this name whenever any Folio file changes. That's what tells devices a new version exists. */
+const APP_CACHE = 'folio-app-v6';
 const FONT_CACHE = 'folio-fonts';
 const APP_FILES = [
   './',
@@ -16,7 +17,10 @@ const APP_FILES = [
 ];
 
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(APP_CACHE).then(c => c.addAll(APP_FILES)).then(() => self.skipWaiting()));
+  /* cache:'reload' skips the browser's own web cache, so the new version saves fresh files, never stale ones. */
+  event.waitUntil(caches.open(APP_CACHE)
+    .then(c => c.addAll(APP_FILES.map(f => new Request(f, { cache:'reload' }))))
+    .then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', event => {

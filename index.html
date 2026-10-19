@@ -690,21 +690,28 @@ const store = (() => {
     dbp.catch(() => { dbp = null; });
     return dbp;
   }
+  /* Writes still in progress are counted, so an update never reloads Folio halfway through saving your place or notes. */
+  let pending = 0;
   async function run(name, mode, fn){
-    const db = await open();
-    return new Promise((res, rej) => {
-      const tx = db.transaction(name, mode);
-      const rq = fn(tx.objectStore(name));
-      tx.oncomplete = () => res(rq ? rq.result : undefined);
-      tx.onerror = () => rej(tx.error);
-      tx.onabort = () => rej(tx.error || new Error('aborted'));
-    });
+    const w = mode === 'readwrite';
+    if (w) pending++;
+    try {
+      const db = await open();
+      return await new Promise((res, rej) => {
+        const tx = db.transaction(name, mode);
+        const rq = fn(tx.objectStore(name));
+        tx.oncomplete = () => res(rq ? rq.result : undefined);
+        tx.onerror = () => rej(tx.error);
+        tx.onabort = () => rej(tx.error || new Error('aborted'));
+      });
+    } finally { if (w) pending--; }
   }
   return {
     get: (n, k) => run(n, 'readonly', s => s.get(k)),
     put: (n, v) => run(n, 'readwrite', s => s.put(v)),
     del: (n, k) => run(n, 'readwrite', s => s.delete(k)),
-    all: n => run(n, 'readonly', s => s.getAll())
+    all: n => run(n, 'readonly', s => s.getAll()),
+    idle: async maxMs => { const t0 = Date.now(); while (pending > 0 && Date.now() - t0 < (maxMs || 4000)) await sleep(50); }
   };
 })();
 let persistAsked = false;
@@ -1536,6 +1543,7 @@ function closeReader(silent){
   reader.hidden = true; shelf.hidden = false;
   renderShelf(); setWake();
   if (!silent && history.state && history.state.folio === 'reader'){ try { history.back(); } catch(e){} }
+  applyUpdate();
 }
 window.addEventListener('popstate', () => { if (readerOpen) closeReader(true); });
 /* Leaving the book ends the session: reflect first, if the session had real work in it. */
@@ -2916,11 +2924,35 @@ if (document.fonts && document.fonts.addEventListener){
   });
 }
 
+/* ================= Updates ================= */
+/* When a new version of Folio has downloaded, it switches over by itself, but only while you're on the shelf,
+   so an update never interrupts your reading. A short note confirms it happened. */
+const Upd = { ready:false, reg:null, told:false, going:false };
+function applyUpdate(){
+  if (!Upd.ready || readerOpen || Upd.going) return;
+  Upd.going = true;
+  store.idle().then(() => {
+    if (readerOpen){ Upd.going = false; return; }
+    try { sessionStorage.setItem('folio.updated', '1'); } catch(e){}
+    location.reload();
+  });
+}
+
 /* ================= Start ================= */
 applyColors(); applyType(); buildPickers(); bindControls(); syncControls(); renderShelf();
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')){
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  const hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController) return;   // the very first install isn't an update
+    Upd.ready = true;
+    if (!readerOpen) applyUpdate();
+    else if (!Upd.told){ Upd.told = true; toast('A Folio update is ready. It installs when you go back to your shelf.'); }
+  });
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').then(r => { Upd.reg = r; }).catch(() => {}));
+  /* Look for a new version whenever Folio comes back to the front. */
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && Upd.reg) Upd.reg.update().catch(() => {}); });
 }
+try { if (sessionStorage.getItem('folio.updated')){ sessionStorage.removeItem('folio.updated'); setTimeout(() => toast('Folio updated to the newest version.'), 500); } } catch(e){}
 })();
 </script>
 </body>

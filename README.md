@@ -43,7 +43,9 @@ Read aloud with device voices happens entirely on your device. With the OpenAI v
 
 ## Updating
 
-Replace the changed files in the repository. The app keeps an offline copy, so the update shows up the **second** time you open it.
+Replace the changed files in the repository, and change the `APP_CACHE` name at the top of `sw.js` (for example `folio-app-v6` to `folio-app-v7`). That name change is what tells devices a new version exists.
+
+Folio downloads the new version in the background and switches to it by itself the next time you're on the shelf, so an update never interrupts your reading. A short "Folio updated" note confirms it. It also checks for updates whenever you come back to the app.
 
 ## What each file does
 
