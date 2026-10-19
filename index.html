@@ -215,6 +215,92 @@ input[type=color]{width:42px;height:32px;padding:0;border:1px solid var(--ui-lin
 textarea.field{resize:vertical;line-height:1.4;font-size:15px}
 select.field{appearance:auto;-webkit-appearance:menulist}
 .sheet .text-btn{justify-self:start}
+/* Learning: pauses, scripts, highlights, notebook, reflection */
+#hlBtn[aria-pressed="true"]{color:var(--bar-accent);background:rgba(127,127,127,.15)}
+#reader.listening #hlBtn{display:none}
+#nbBtn{position:relative}
+.nb-badge{position:absolute;top:5px;right:4px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--bar-accent);color:var(--bar-accent-ink,#fff);font:600 10.5px/17px var(--f-ui);text-align:center;pointer-events:none}
+::highlight(folio-mk-key){background-color:rgba(255,206,64,.48)}
+::highlight(folio-mk-link){background-color:rgba(96,190,120,.42)}
+::highlight(folio-mk-q){background-color:rgba(236,110,110,.36)}
+::highlight(folio-pick){background-color:rgba(70,140,250,.32)}
+.pickbar{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(58px + env(safe-area-inset-bottom,0px) + 12px);z-index:25;display:flex;align-items:center;gap:6px;max-width:calc(100% - 24px);padding:6px 6px 6px 16px;border-radius:999px;background:var(--bar-bg);color:var(--bar-ink);box-shadow:0 8px 26px rgba(0,0,0,.28);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font-size:14px}
+.pickbar span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.pickbar button{flex:none;padding:8px 14px;border-radius:999px;font-weight:600;font-size:14px}
+.pickbar .go{background:var(--bar-accent);color:var(--bar-accent-ink,#fff)}
+.pickbar .go:disabled{opacity:.4}
+.modal{position:absolute;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;background:rgba(8,12,10,.5);animation:fadein .18s ease}
+@keyframes fadein{from{opacity:0}}
+@media (min-width:760px){.modal{align-items:center;padding:24px}}
+.card{width:100%;max-width:580px;max-height:calc(100% - env(safe-area-inset-top,0px) - 12px);display:flex;flex-direction:column;background:var(--ui-surface);color:var(--ui-ink);border-radius:20px 20px 0 0;box-shadow:0 -12px 40px rgba(0,0,0,.3);animation:sheet-up .24s ease;user-select:none;-webkit-user-select:none}
+@media (min-width:760px){.card{border-radius:18px;max-height:100%}}
+.card-head{padding:20px 22px 4px;display:grid;gap:4px}
+.eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ui-accent)}
+.card-head h2{margin:0;font:600 22px/1.2 var(--f-mark);letter-spacing:-.01em}
+.card-head p{margin:2px 0 0;color:var(--ui-muted);font-size:14px}
+.card-body{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:12px 22px 8px;display:grid;gap:16px}
+.card-foot{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:12px 16px calc(env(safe-area-inset-bottom,0px) + 14px) 16px;border-top:1px solid var(--ui-line)}
+.card-foot .sp{flex:1}
+.btn{padding:12px 18px;border-radius:12px;font-weight:600;font-size:15px}
+.btn.primary{background:var(--ui-accent);color:var(--ui-accent-ink)}
+.btn.primary:disabled{opacity:.4;cursor:default}
+.btn.ghost{color:var(--ui-muted);padding-left:10px;padding-right:10px}
+.btn.danger{color:var(--ui-danger);padding-left:10px;padding-right:10px}
+.q{display:grid;gap:6px}
+.q>label{font-size:14px;font-weight:600}
+.q>label small{font-weight:400;color:var(--ui-muted)}
+.q .help{font-size:12.5px;color:var(--ui-muted);margin:0}
+.rule{margin:0;font-size:14px;line-height:1.45;padding:11px 14px;border-radius:12px;background:var(--ui-accent-soft);color:var(--ui-ink)}
+.rule b{font-weight:600}
+.scripts{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14.5px;line-height:1.4}
+.quote{margin:0;font:400 16px/1.5 var(--f-mark);padding:10px 14px;border-left:4px solid #E3B232;background:var(--ui-raise);border-radius:4px 12px 12px 4px;max-height:9.5em;overflow:auto;-webkit-user-select:text;user-select:text}
+.quote.link{border-left-color:#5DB477}.quote.q{border-left-color:#E06A6A}
+.kinds{display:flex;flex-wrap:wrap;gap:8px}
+.kinds button{display:flex;align-items:center;gap:7px;padding:8px 13px;border-radius:999px;border:1px solid var(--ui-line);font-size:14px;font-weight:500}
+.kinds button i{width:11px;height:11px;border-radius:50%;background:#E3B232}
+.kinds button[data-v="link"] i{background:#5DB477}.kinds button[data-v="q"] i{background:#E06A6A}
+.kinds button[aria-pressed="true"]{border-color:var(--ui-accent);box-shadow:0 0 0 1px var(--ui-accent) inset;background:var(--ui-accent-soft);font-weight:600}
+.statline{margin:0;font-size:14px;color:var(--ui-muted);line-height:1.5}
+.statline b{color:var(--ui-ink);font-weight:600}
+.pick{font:400 16px/1.6 var(--f-mark);display:grid;gap:10px;-webkit-user-select:none;user-select:none}
+.pick p,.pick h4{margin:0}.pick h4{font-weight:600;font-size:17px}
+.pick .cont{font-size:12px;font-family:var(--f-ui);color:var(--ui-muted);display:block}
+.sent{cursor:pointer;border-radius:4px;padding:1px 0;transition:background-color .12s}
+.sent.mk-key{background:rgba(255,206,64,.48)}.sent.mk-link{background:rgba(96,190,120,.42)}.sent.mk-q{background:rgba(236,110,110,.36)}
+.sent.sel{background:rgba(70,140,250,.32)}
+.empty-note{margin:0;color:var(--ui-muted);font-size:14px}
+/* Notebook */
+.nb{position:absolute;inset:0;z-index:46;display:flex;flex-direction:column;background:var(--ui-bg);color:var(--ui-ink)}
+.nb .zbar{background:var(--ui-surface);color:var(--ui-ink);border-bottom:1px solid var(--ui-line)}
+.nb-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 30px) max(16px,env(safe-area-inset-left,0px))}
+.nb-in{max-width:720px;margin:0 auto;display:grid;gap:14px}
+.nb-in h3{margin:12px 0 0;font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ui-muted)}
+.goal{background:var(--ui-surface);border:1px solid var(--ui-line);border-radius:14px;padding:12px 14px;display:grid;gap:4px}
+.goal .k{font-size:12px;font-weight:600;color:var(--ui-accent);display:flex;justify-content:space-between;align-items:center}
+.goal .v{font:400 16px/1.45 var(--f-mark)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px}
+.stat{background:var(--ui-surface);border:1px solid var(--ui-line);border-radius:12px;padding:10px 12px;font-size:12.5px;color:var(--ui-muted)}
+.stat b{display:block;font-size:22px;line-height:1.1;color:var(--ui-ink);font-variant-numeric:tabular-nums}
+.stat.minor b{font-size:16px;color:var(--ui-muted)}
+.entry{background:var(--ui-surface);border:1px solid var(--ui-line);border-radius:14px;padding:12px 14px;display:grid;gap:8px}
+.entry .where{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:2px 8px;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ui-muted)}
+.entry .f{display:grid;gap:2px}
+.entry .f .k{font-size:12px;font-weight:600;color:var(--ui-accent)}
+.entry .f .v{font-size:15px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere;-webkit-user-select:text;user-select:text}
+.entry .quote{font-size:15px}
+.recall .v.hid{filter:blur(6px);cursor:pointer;-webkit-user-select:none;user-select:none}
+.acts{display:flex;gap:2px;margin-left:auto}
+.mini{font-size:13px;font-weight:600;color:var(--ui-accent);padding:6px 8px;border-radius:8px}
+.mini.del{color:var(--ui-muted)}.mini.del.armed{color:var(--ui-danger)}
+.book-learn{font-size:12px;font-weight:600;color:var(--ui-accent);margin-top:-4px}
+/* Scripts editor in settings */
+.script-list{display:grid;gap:6px}
+.script-row{display:flex;gap:6px;align-items:flex-start;font-size:14px;line-height:1.4;padding:9px 6px 9px 12px;border-radius:10px;background:var(--ui-raise);border:1px solid var(--ui-line)}
+.script-row span{flex:1;padding-top:2px}
+.script-row button{flex:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:var(--ui-muted)}
+.add-row{display:flex;gap:8px}
+.add-row .field{flex:1;min-width:0}
+.add-row button{flex:none;padding:0 16px;border-radius:10px;background:var(--ui-accent);color:var(--ui-accent-ink);font-weight:600}
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 78px);transform:translate(-50%,16px);opacity:0;z-index:60;width:max-content;max-width:min(92vw,460px);padding:11px 16px;border-radius:12px;background:#1B231E;color:#EEF2EF;font-size:14px;line-height:1.4;box-shadow:0 10px 30px rgba(0,0,0,.3);transition:opacity .2s,transform .2s;pointer-events:none}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion: reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
@@ -261,6 +347,7 @@ select.field{appearance:auto;-webkit-appearance:menulist}
   <header class="bar topbar">
     <button id="back" class="icon-btn" type="button" aria-label="Back to shelf"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
     <div class="title-wrap"><div id="bookName" class="book-name"></div><div id="bookSub" class="book-sub"></div><div id="ttsCap" class="cap"></div></div>
+    <button id="nbBtn" class="icon-btn" type="button" aria-label="Notebook: your summaries, highlights and reflections"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg><span id="nbBadge" class="nb-badge" hidden></span></button>
     <button id="listenBtn" class="icon-btn" type="button" aria-label="Read aloud" aria-pressed="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></button>
     <button id="zoomBtn" class="icon-btn" type="button" aria-label="Zoom into this page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6"/></svg></button>
     <button id="setBtn" class="icon-btn aa" type="button" aria-label="Reading settings" aria-expanded="false">Aa</button>
@@ -277,6 +364,7 @@ select.field{appearance:auto;-webkit-appearance:menulist}
       <button id="ttsRate" class="rate" type="button" aria-label="Reading speed">1×</button>
       <span style="flex:1"></span>
     </div>
+    <button id="hlBtn" class="icon-btn" type="button" aria-label="Highlight a passage" aria-pressed="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l-6 6v3h9l3-3"/><path d="M22 12l-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg></button>
     <button id="prev" class="icon-btn" type="button" aria-label="Previous page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
     <input id="slider" type="range" min="1" max="1" value="1" step="1" aria-label="Go to page">
     <span id="pageLabel" class="page-label">1 / 1</span>
@@ -343,6 +431,22 @@ select.field{appearance:auto;-webkit-appearance:menulist}
         </div>
       </section>
 
+      <section class="grp" id="learnGrp">
+        <h3>Learning</h3>
+        <p class="hint">Built on Justin Sung's method: interrupt passive reading, process each part in your own words, and measure progress by what you processed, not pages turned.</p>
+        <div class="lbl">Pause to summarise</div>
+        <div class="seg" data-key="lEvery" role="group" aria-label="Pause to summarise"><button type="button" data-v="off">Off</button><button type="button" data-v="1">Every page</button><button type="button" data-v="2">2 pages</button><button type="button" data-v="3">3 pages</button></div>
+        <p class="hint">When you turn forward, Folio stops you and asks what you just read before you can go on.</p>
+        <label class="row" for="lExtraSw">Also ask for an analogy and a connection <input id="lExtraSw" class="switch" type="checkbox" data-key="lExtra"></label>
+        <label class="row" for="lStartSw">Show my goal and scripts when I start reading <input id="lStartSw" class="switch" type="checkbox" data-key="lStart"></label>
+        <label class="row" for="lReflectSw">Ask me to reflect when I finish a session <input id="lReflectSw" class="switch" type="checkbox" data-key="lReflect"></label>
+        <div class="lbl">My scripts</div>
+        <p class="hint">If–then rules that replace old reading habits. They show at the start of every session.</p>
+        <div id="scriptList" class="script-list"></div>
+        <div class="add-row"><input id="scriptNew" class="field" maxlength="240" placeholder="If …, then I will …"><button id="scriptAdd" type="button">Add</button></div>
+        <button id="scriptReset" class="text-btn" type="button">Restore the suggested scripts</button>
+      </section>
+
       <section class="grp" id="ttsGrp">
         <h3>Read aloud</h3>
         <p class="hint">Tap the headphones at the top to hear the book from the page you're on. While it reads in Reflowed text, tap any sentence to jump there.</p>
@@ -376,6 +480,20 @@ select.field{appearance:auto;-webkit-appearance:menulist}
       <button id="reset" class="text-btn reset" type="button">Reset to defaults</button>
     </div>
   </aside>
+
+  <div id="pickbar" class="pickbar" hidden role="toolbar" aria-label="Highlighting"><span id="pickText">Tap a sentence to highlight it</span><button id="pickCancel" type="button">Cancel</button><button id="pickGo" class="go" type="button" disabled>Add why</button></div>
+
+  <section id="nb" class="nb" hidden aria-label="Notebook">
+    <div class="bar zbar">
+      <button id="nbClose" class="icon-btn" type="button" aria-label="Close notebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div class="title-wrap"><div class="book-name">Notebook</div><div id="nbSub" class="book-sub"></div></div>
+      <button id="nbShare" class="text-btn" type="button" hidden>Share</button>
+      <button id="nbCopy" class="text-btn" type="button">Copy</button>
+    </div>
+    <div class="nb-scroll"><div id="nbIn" class="nb-in"></div></div>
+  </section>
+
+  <div id="modal" class="modal" hidden><div id="card" class="card" role="dialog" aria-modal="true"></div></div>
 
   <div id="zoom" class="zoom" hidden>
     <div class="bar zbar">
@@ -453,7 +571,8 @@ const DEFAULTS = {
   mode:'original', flip:'curl', speed:800, shadows:true, spread:'auto', cover:true,
   theme:'paper', customPage:'#FFF6E5', customText:'#2B241C', tint:true, desk:'auto', customDesk:'#34302B',
   font:'literata', size:19, lh:1.6, margin:9, align:'justify', para:'indent', heads:true, wake:false,
-  ttsEngine:'device', ttsVoice:'', ttsRate:1, ttsFollow:true, ttsHi:true, oaVoice:'marin', oaStyle:OA_STYLE
+  ttsEngine:'device', ttsVoice:'', ttsRate:1, ttsFollow:true, ttsHi:true, oaVoice:'marin', oaStyle:OA_STYLE,
+  lEvery:'1', lExtra:true, lStart:true, lReflect:true
 };
 const LAYOUT_KEYS = ['mode','spread','cover','flip','speed','shadows'];
 const TEXT_KEYS = ['font','size','lh','margin','align','para','heads'];
@@ -472,6 +591,7 @@ function loadSettings(){
   if (OA_VOICES.indexOf(out.oaVoice) < 0) out.oaVoice = DEFAULTS.oaVoice;
   out.ttsRate = clamp(out.ttsRate, 0.6, 2);
   if (!out.oaStyle.trim()) out.oaStyle = OA_STYLE;
+  if (['off', '1', '2', '3'].indexOf(out.lEvery) < 0) out.lEvery = DEFAULTS.lEvery;
   return out;
 }
 function saveSettings(){ try { localStorage.setItem('folio.settings', JSON.stringify(S)); } catch(e){} }
@@ -556,11 +676,13 @@ const store = (() => {
     if (dbp) return dbp;
     dbp = new Promise((res, rej) => {
       if (!('indexedDB' in window)) { rej(new Error('No IndexedDB')); return; }
-      const rq = indexedDB.open('folio', 1);
+      /* Version 2 adds "learn": your goal, summaries, highlights and sessions for each book. */
+      const rq = indexedDB.open('folio', 2);
       rq.onupgradeneeded = () => {
         const db = rq.result;
         if (!db.objectStoreNames.contains('books')) db.createObjectStore('books', { keyPath:'id' });
         if (!db.objectStoreNames.contains('files')) db.createObjectStore('files', { keyPath:'id' });
+        if (!db.objectStoreNames.contains('learn')) db.createObjectStore('learn', { keyPath:'id' });
       };
       rq.onsuccess = () => res(rq.result);
       rq.onerror = () => rej(rq.error);
@@ -591,7 +713,8 @@ function readLocalPos(id){ try { return JSON.parse(localStorage.getItem('folio.p
 
 /* ================= State ================= */
 const shelf = $('#shelf'), reader = $('#reader'), stage = $('#stage'), slider = $('#slider'), sheet = $('#sheet');
-const fresh = () => ({ rec:null, keep:false, pdf:null, n:0, ratio:0.75, title:'', blocks:null, textState:'none', textPromise:null,
+const fresh = () => ({ learn:null, sess:null, chk:null, lastVis:null, gateResume:false, marksOk:false, textQuiet:false,
+  rec:null, keep:false, pdf:null, n:0, ratio:0.75, title:'', blocks:null, textState:'none', textPromise:null,
   pages:[], engine:null, layout:null, map:null, cur:0, pos:{ page:0 }, mounting:false, pagCache:null, fontOk:true });
 let B = fresh();
 let readerOpen = false;
@@ -901,16 +1024,19 @@ function addPageBlocks(tc, pi, out){
   }
   close();
 }
-function ensureText(){
+/* quiet = read the text in the background (for the learning features) without the "Preparing text" overlay. */
+function ensureText(quiet){
+  if (!quiet) B.textQuiet = false;
   if (!B.textPromise){
     const pdf = B.pdf;
     B.textState = 'pending';
+    B.textQuiet = !!quiet;
     B.textPromise = (async () => {
       const out = [];
       for (let p = 1; p <= pdf.numPages; p++){
         if (B.pdf !== pdf) return null;
         try { const page = await pdf.getPage(p); const tc = await page.getTextContent(); addPageBlocks(tc, p - 1, out); page.cleanup(); } catch(e){}
-        if (p % 4 === 0 || p === pdf.numPages) setBusy(`Preparing text · ${Math.round(p / pdf.numPages * 100)}%`);
+        if (!B.textQuiet && (p % 4 === 0 || p === pdf.numPages)) setBusy(`Preparing text · ${Math.round(p / pdf.numPages * 100)}%`);
       }
       if (B.pdf !== pdf) return null;
       out.forEach((b, i) => { if (b.t === 'p' && (i === 0 || out[i - 1].t === 'h')) b.ni = true; });
@@ -1167,6 +1293,9 @@ function swapIn(pages, L, map){
   if (reader.classList.contains('compact') && !TTS.on) autoHide = setTimeout(() => { if (sheet.hidden) toggleChrome(true); }, 2200);
   scheduleRender(B.cur);
   if (TTS.on) ttsAfterBuild();
+  /* A new layout (rotation, settings) isn't a page turn, so it never triggers a summary pause. */
+  B.lastVis = visibleRange();
+  paintMarks(); updateNbBadge();
 }
 function fadeIn(){ stage.style.transition = 'none'; stage.style.opacity = '0'; void stage.offsetWidth; stage.style.transition = ''; stage.style.opacity = ''; }
 function onPage(idx){
@@ -1175,6 +1304,7 @@ function onPage(idx){
   updateLabels();
   scheduleRender(idx);
   ttsOnPage();
+  learnOnPage();
 }
 
 /* ================= Reader chrome ================= */
@@ -1189,10 +1319,15 @@ function updateLabels(){
   if (!sliding) slider.value = String(a + 1);
   $('#prev').disabled = a <= 0;
   $('#next').disabled = b >= n - 1;
-  $('#bookSub').textContent = (L.mode === 'reflow' && B.map && B.map[a] && B.blocks)
+  const where = (L.mode === 'reflow' && B.map && B.map[a] && B.blocks)
     ? `Reflowed text · from PDF page ${B.blocks[B.map[a].b].sp + 1}`
     : `Original PDF · ${B.n} ${B.n === 1 ? 'page' : 'pages'}`;
+  /* Progress you see while reading is what you processed, not pages turned. */
+  const s = B.sess;
+  $('#bookSub').textContent = s && s.sums ? `${where} · ${plural(s.sums, 'summary', 'summaries')} this session` : where;
+  updateNbBadge();
 }
+function plural(n, one, many){ return n + ' ' + (n === 1 ? one : (many || one + 's')); }
 function updateTools(){ $('#zoomBtn').hidden = !B.layout || B.layout.mode !== 'original'; }
 function toggleChrome(force){
   const off = typeof force === 'boolean' ? force : !reader.classList.contains('chrome-off');
@@ -1228,8 +1363,12 @@ stage.addEventListener('pointerup', e => {
   setTimeout(() => {
     const en = B.engine;
     if (!en || en.busy() || en.current() !== before) return;
+    /* Highlighting: taps pick sentences instead of turning pages. */
+    if (HLM.on){ pickTap(target, tx, ty); return; }
     /* While reading aloud, a tap on the text jumps the reading there. */
     if (TTS.on && ttsTapJump(target, tx, ty)) return;
+    /* A tap on one of your highlights opens its note. */
+    if (openMarkAt(tx, ty)) return;
     if (fx < 0.3) en.prev();
     else if (fx > 0.7) en.next();
     else toggleChrome();
@@ -1239,11 +1378,14 @@ stage.addEventListener('pointerup', e => {
 document.addEventListener('keydown', e => {
   if (!readerOpen) return;
   if (e.key === 'Escape'){
+    if (!$('#modal').hidden){ if (Modal.dismiss) Modal.dismiss(); return; }
+    if (!$('#nb').hidden){ closeNotebook(); return; }
+    if (HLM.on){ pickEnd(); return; }
     if (!$('#zoom').hidden){ closeZoom(); return; }
     if (!sheet.hidden){ closeSheet(); return; }
     return;
   }
-  if (!B.engine || !$('#zoom').hidden) return;
+  if (!B.engine || !$('#zoom').hidden || !$('#modal').hidden || !$('#nb').hidden) return;
   const tag = e.target && e.target.tagName;
   if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
   if (e.target.closest && e.target.closest('#sheet')) return;
@@ -1362,7 +1504,11 @@ async function openBook(rec, blob, keep){
   if (!B.pos || typeof B.pos.page !== 'number' || B.pos.page >= B.n) B.pos = { page:0 };
   rec.pages = B.n; rec.opened = Date.now();
   if (keep) store.put('books', rec).catch(() => {});
+  await loadLearn(rec);
+  if (B.rec !== rec) return;
   await build();
+  if (B.rec !== rec) return;
+  learnBegin();
   if (keep && !rec.cover) makeThumb(pdf).then(url => { rec.cover = url; return store.put('books', rec); }).catch(() => {});
 }
 function showReader(){
@@ -1377,10 +1523,12 @@ function showReader(){
 function closeReader(silent){
   if (!readerOpen) return;
   ttsStop();
+  learnEnd();
   readerOpen = false;
   savePos.cancel(); savePosNow();
   buildToken++;
   destroyEngine(); clearRenderCache(); closeZoom(); closeSheet(); hideBusy();
+  closeModal(); closeNotebook(true); pickEnd();
   clearTimeout(autoHide);
   const pdf = B.pdf;
   B = fresh();
@@ -1390,15 +1538,18 @@ function closeReader(silent){
   if (!silent && history.state && history.state.folio === 'reader'){ try { history.back(); } catch(e){} }
 }
 window.addEventListener('popstate', () => { if (readerOpen) closeReader(true); });
-$('#back').addEventListener('click', () => closeReader());
+/* Leaving the book ends the session: reflect first, if the session had real work in it. */
+$('#back').addEventListener('click', () => { if (!maybeReflect(() => closeReader())) closeReader(); });
 
 /* ================= Shelf ================= */
 let editing = false;
 function setEditing(v){ editing = v; $('#books').classList.toggle('editing', v); $('#manage').textContent = v ? 'Done' : 'Edit'; }
 $('#manage').addEventListener('click', () => setEditing(!editing));
 async function renderShelf(){
-  let books = [];
+  let books = [], learns = [];
   try { books = await store.all('books'); } catch(e){}
+  try { learns = await store.all('learn'); } catch(e){}
+  const L2 = new Map((learns || []).map(l => [l.id, l]));
   books = (books || []).filter(b => b && b.id);
   books.sort((a, b) => (b.opened || b.added || 0) - (a.opened || a.added || 0));
   $('#shelfEmpty').hidden = books.length > 0;
@@ -1417,6 +1568,7 @@ async function renderShelf(){
     li.innerHTML =
       `<button class="book-open" type="button"><span class="cover">${cover}</span>` +
       `<span class="book-title">${esc(b.title)}</span>` +
+      learnLine(L2.get(b.id)) +
       `<span class="book-meta">${pages ? `Page ${at} of ${pages}` : 'Not opened yet'}</span>` +
       `<span class="prog"><i style="width:${pctDone}%"></i></span></button>` +
       (k === 0 && books.length > 1 && b.opened ? '<span class="last-read">Last read</span>' : '') +
@@ -1492,6 +1644,7 @@ function syncControls(){
   if (document.activeElement !== st) st.value = S.oaStyle;
   fillVoices();
   $('#ttsRate').textContent = rateText(S.ttsRate);
+  renderScripts();
 }
 function setSetting(k, v){
   S[k] = v;
@@ -1502,6 +1655,7 @@ function setSetting(k, v){
   if (k === 'font' || k === 'size' || k === 'lh') applyType();
   if (k === 'wake') setWake();
   if (/^(tts|oa)/.test(k)) ttsSettingChanged(k);
+  if (k === 'lEvery' && B.chk) B.chk.turns = 0;
   if (!readerOpen) return;
   if (LAYOUT_KEYS.indexOf(k) >= 0 || (TEXT_KEYS.indexOf(k) >= 0 && S.mode === 'reflow')) rebuildSoon();
 }
@@ -1536,6 +1690,7 @@ function bindControls(){
   });
   $('#oaStyle').addEventListener('change', e => { S.oaStyle = e.target.value.trim() || OA_STYLE; saveSettings(); syncControls(); });
   $('#ttsTest').addEventListener('click', ttsSample);
+  bindLearnSettings();
   $('#reset').addEventListener('click', () => {
     S = Object.assign({}, DEFAULTS);
     saveSettings(); applyColors(); applyType(); syncControls(); setWake();
@@ -1984,6 +2139,7 @@ function setupMediaSession(){
 async function ttsStart(pos){
   if (!B.pdf || !B.layout) return;
   unlockAudio();
+  pickEnd();
   const pdf = B.pdf;
   if (B.textState !== 'ready'){
     setBusy('Preparing text…');
@@ -2033,8 +2189,9 @@ function ttsTapJump(target, x, y){
   const b = +el.dataset.b, blk = B.blocks[b];
   if (!blk) return false;
   let c = charOfWord(blk, +el.dataset.w0);
-  const cr = caretAt(x, y);
-  if (cr && cr.node && cr.node.nodeType === 3 && cr.node.parentNode === el) c += cr.offset;
+  const hs = hitSentence(el, x, y);
+  if (hs) c = hs.a;
+  else { const cr = caretAt(x, y); if (cr && cr.node && cr.node.nodeType === 3 && cr.node.parentNode === el) c += cr.offset; }
   unlockAudio();
   setPos(b, c);
   if (TTS.playing) restart(); else play();
@@ -2081,6 +2238,674 @@ $('#ttsRate').addEventListener('click', () => {
   setSetting('ttsRate', r);
   toast('Reading speed ' + rateText(r));
 });
+
+/* ================= Learning (Justin Sung's method) ================= */
+/* Old reading habits (skimming, rereading, highlighting everything) fire first because they're cheap and feel productive.
+   Folio interrupts them on purpose: forward page turns pause for you to process what you read in your own words,
+   highlights need a reason, and progress counts what you processed, not pages turned.
+   Everything is saved per book, in this browser on this device. */
+const SCRIPTS_DEFAULT = [
+  'If I’m reading a dense passage, then I summarise each part in my own words before I move on.',
+  'If I’ve read two paragraphs without stopping, then I pause and ask how this connects to my goal.',
+  'If I meet a new idea, then I make an analogy for it from something I already know.',
+  'I never highlight without writing why it matters.',
+  'If reading feels fast and comfortable, then I treat that as a sign I’m being passive, and slow down.'
+];
+const KINDS = { key:'Key idea', link:'Connects to…', q:'Question' };
+const KIND_HELP = { key:'Why is this important? Say it in your own words.', link:'What does it connect to, and how?', q:'What don’t you understand yet? What would you ask?' };
+const NEW_SESSION_GAP = 30 * 60 * 1000;
+const isTouch = !!(window.matchMedia && matchMedia('(pointer: coarse)').matches);
+const HLM = { on:false, a:null, z:null };
+const Modal = { dismiss:null };
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const wordCount = s => (String(s || '').trim().match(/\S+/g) || []).length;
+const XSVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
+function getScripts(){
+  try { const a = JSON.parse(localStorage.getItem('folio.scripts') || 'null'); if (Array.isArray(a)) return a.filter(s => typeof s === 'string' && s.trim()); } catch(e){}
+  return SCRIPTS_DEFAULT.slice();
+}
+function setScripts(a){ try { localStorage.setItem('folio.scripts', JSON.stringify(a)); } catch(e){} }
+
+/* ---- The per-book record: goal, summaries, highlights, sessions ---- */
+async function loadLearn(rec){
+  let l = null;
+  try { l = await store.get('learn', rec.id); } catch(e){}
+  if (!l) l = { id:rec.id, goal:'', entries:[], marks:[], sessions:[], lastActive:0 };
+  l.entries = l.entries || []; l.marks = l.marks || []; l.sessions = l.sessions || []; l.goal = l.goal || '';
+  if (B.rec === rec) B.learn = l;
+}
+function saveLearnNow(){ const l = B.learn; if (!l) return; l.lastActive = Date.now(); store.put('learn', l).catch(() => {}); }
+const saveLearnSoon = debounce(saveLearnNow, 400);
+function counts(l){
+  const c = { sums:0, ana:0, con:0, hls:l && l.marks ? l.marks.length : 0, sessions:0, pages:0 };
+  if (!l) return c;
+  for (const e of l.entries){ if (e.summary) c.sums++; if (e.analogy) c.ana++; if (e.connection) c.con++; }
+  for (const s of l.sessions){ c.sessions++; c.pages += s.pages || 0; }
+  return c;
+}
+function learnLine(l){
+  if (!l) return '';
+  const c = counts(l), parts = [];
+  if (c.sums) parts.push(plural(c.sums, 'summary', 'summaries'));
+  if (c.ana) parts.push(plural(c.ana, 'analogy', 'analogies'));
+  if (c.hls) parts.push(plural(c.hls, 'highlight'));
+  return parts.length ? `<span class="book-learn">${parts.join(' · ')}</span>` : '';
+}
+
+/* ---- Sessions ---- */
+function learnBegin(){
+  const l = B.learn;
+  if (!l || !B.layout) return;
+  const now = Date.now();
+  const isNew = !l.lastActive || now - l.lastActive > NEW_SESSION_GAP || !l.goal;
+  B.sess = { id:uid(), start:now, end:now, pages:0, sums:0, ana:0, con:0, hls:0, skips:0, old:'', better:'', drill:'' };
+  l.sessions.push(B.sess);
+  if (l.sessions.length > 200) l.sessions.splice(0, l.sessions.length - 200);
+  const v = visibleRange(), a = anchorOfIdx(v[0]);
+  B.chk = { from:a, done:a, turns:0 };
+  B.lastVis = v;
+  /* Original PDF pages are pictures: read their text quietly in the background so pauses can skip pages with no words. */
+  if (S.lEvery !== 'off' && B.layout.mode === 'original') ensureText(true).then(() => updateNbBadge()).catch(() => {});
+  if (S.lStart && isNew) showStartCard();
+  saveLearnSoon();
+  updateLabels();
+}
+function learnEnd(){
+  const l = B.learn, s = B.sess;
+  if (!l || !s) return;
+  s.end = Date.now();
+  const empty = !s.sums && !s.hls && !s.skips && !s.old && !s.better && !s.drill && s.end - s.start < 120000;
+  if (empty){ const i = l.sessions.indexOf(s); if (i >= 0) l.sessions.splice(i, 1); }
+  saveLearnSoon.cancel(); saveLearnNow();
+  B.sess = null;
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && B.sess){ B.sess.end = Date.now(); saveLearnSoon.cancel(); saveLearnNow(); }
+});
+
+/* ---- Places in the book that survive re-layout (rotation, font changes, switching modes) ---- */
+function anchorOfIdx(i){
+  const L = B.layout;
+  if (L && L.mode === 'reflow' && B.map && B.map[i] && B.blocks){ const e = B.map[i]; return { sp:B.blocks[e.b].sp, b:e.b, c:charOfWord(B.blocks[e.b], e.w) }; }
+  return { sp:i };
+}
+function idxOfAnchor(a){
+  const L = B.layout;
+  if (!L || !a) return 0;
+  if (L.mode === 'reflow' && B.map && B.blocks){
+    if (a.b != null && B.blocks[a.b]) return reflowIndexFor({ b:a.b, w:wordAtChar(B.blocks[a.b], a.c || 0) });
+    return reflowIndexFor({ page:a.sp || 0 });
+  }
+  return clamp(a.sp || 0, 0, B.n - 1);
+}
+function cmpAnchor(x, y){
+  if (x.b != null && y.b != null) return (x.b - y.b) || ((x.c || 0) - (y.c || 0));
+  return (x.sp || 0) - (y.sp || 0);
+}
+function textBetween(a, z){
+  const bl = B.blocks;
+  if (!bl) return 9999;   // text not read yet: treat it as a normal page of text
+  let n = 0;
+  if (a.b != null && z.b != null){
+    for (let b = a.b; b <= Math.min(z.b, bl.length - 1); b++){
+      const len = bl[b].text.length, s = b === a.b ? (a.c || 0) : 0, e = b === z.b ? (z.c || 0) : len;
+      n += Math.max(0, e - s);
+    }
+    return n;
+  }
+  for (const blk of bl) if (blk.sp >= (a.sp || 0) && blk.sp < (z.sp || 0)) n += blk.text.length;
+  return n;
+}
+function rangeLabel(a, z){
+  const p0 = a.sp || 0;
+  let p1 = p0;
+  if (z.b != null && B.blocks){ const zb = (z.c || 0) > 0 ? z.b : z.b - 1; if (zb >= 0 && B.blocks[zb]) p1 = B.blocks[zb].sp; }
+  else p1 = Math.max(p0, (z.sp || 0) - 1);
+  return p1 > p0 ? `PDF pages ${p0 + 1}–${p1 + 1}` : `PDF page ${p0 + 1}`;
+}
+function headingIn(a, z){
+  const bl = B.blocks;
+  if (!bl) return '';
+  if (a.b != null && z.b != null){ for (let b = a.b; b <= Math.min(z.b, bl.length - 1); b++) if (bl[b].t === 'h') return bl[b].text; return ''; }
+  const h = bl.find(blk => blk.t === 'h' && blk.sp >= (a.sp || 0) && blk.sp < (z.sp || 0));
+  return h ? h.text : '';
+}
+
+/* ---- Pattern interrupt: forward page turns pause for a summary ---- */
+function learnOnPage(){
+  if (!B.learn || !B.chk || !B.layout || B.mounting) return;
+  const v = visibleRange(), o = B.lastVis || v;
+  B.lastVis = v;
+  if (v[0] === o[0]) return;
+  const ch = B.chk, here = anchorOfIdx(v[0]);
+  if (v[0] === o[1] + 1){
+    if (B.sess) B.sess.pages++;
+    if (cmpAnchor(anchorOfIdx(o[0]), ch.done) < 0) return;   // re-reading pages you've already processed
+    if (cmpAnchor(ch.from, ch.done) < 0) ch.from = ch.done;
+    ch.turns++;
+    const N = S.lEvery === 'off' ? 0 : +S.lEvery;
+    if (N && ch.turns >= N && $('#modal').hidden && textBetween(ch.from, here) >= 220) openGate({ from:ch.from, to:here });
+  } else if (v[0] > o[1] + 1 && cmpAnchor(here, ch.done) > 0){
+    /* Jumped ahead with the slider or the notebook: start counting from here. */
+    ch.from = ch.done = here; ch.turns = 0;
+  }
+  saveLearnSoon();
+}
+function openGate(rng){
+  if (TTS.on && TTS.playing){ pause(); B.gateResume = true; }
+  pickEnd();
+  const label = rangeLabel(rng.from, rng.to), head = headingIn(rng.from, rng.to);
+  const scripts = getScripts(), rule = scripts.length ? scripts[Math.floor(Math.random() * scripts.length)] : '';
+  const goal = B.learn.goal;
+  openModal({
+    blocking:true,
+    html:`<div class="card-head"><div class="eyebrow">Pause · ${esc(label)}</div><h2>What did you just read?</h2>${head ? `<p>${esc(head)}</p>` : ''}</div>
+      <div class="card-body">
+        ${rule ? `<p class="rule"><b>Your script:</b> ${esc(rule)}</p>` : ''}
+        <div class="q"><label for="gSum">Summary <small>· in your own words, without looking back</small></label>
+          <textarea id="gSum" class="field" rows="4" placeholder="The main idea is…"></textarea>
+          <p class="help" id="gHelp">Write at least a full sentence. Can’t remember it? Tap “Read it again” and read actively this time.</p></div>
+        ${S.lExtra ? `<div class="q"><label for="gAna">Analogy <small>· optional</small></label><textarea id="gAna" class="field" rows="2" placeholder="It’s like…"></textarea></div>
+        <div class="q"><label for="gCon">Connection <small>· optional</small></label><textarea id="gCon" class="field" rows="2" placeholder="This connects to my goal, or to something I already know, because…"></textarea>${goal ? `<p class="help">Your goal: ${esc(goal)}</p>` : ''}</div>` : ''}
+      </div>
+      <div class="card-foot"><button class="btn ghost" data-act="again" type="button">Read it again</button><button class="btn ghost" data-act="skip" type="button">Skip</button><span class="sp"></span><button class="btn primary" data-act="save" type="button" disabled>Save and continue</button></div>`,
+    bind(card){
+      const sum = $('#gSum', card), go = $('[data-act="save"]', card);
+      sum.addEventListener('input', () => { go.disabled = wordCount(sum.value) < 4; });
+      card.addEventListener('click', e => {
+        const a = e.target.closest('[data-act]');
+        if (!a) return;
+        if (a.dataset.act === 'save' && !go.disabled){
+          const ana = $('#gAna', card), con = $('#gCon', card);
+          saveGate(rng, label, head, sum.value, ana ? ana.value : '', con ? con.value : '');
+        } else if (a.dataset.act === 'skip') skipGate();
+        else if (a.dataset.act === 'again') againGate(rng);
+      });
+      if (!isTouch) setTimeout(() => sum.focus(), 60);
+    }
+  });
+}
+function saveGate(rng, label, head, sum, ana, con){
+  const e = { id:uid(), at:Date.now(), from:rng.from, to:rng.to, label, heading:head || '', summary:sum.trim(), analogy:ana.trim(), connection:con.trim() };
+  B.learn.entries.push(e);
+  const s = B.sess;
+  if (s){ s.sums++; if (e.analogy) s.ana++; if (e.connection) s.con++; }
+  closeGate(rng.to);
+  const bits = [plural(s ? s.sums : 1, 'summary', 'summaries')];
+  if (s && s.ana) bits.push(plural(s.ana, 'analogy', 'analogies'));
+  if (s && s.con) bits.push(plural(s.con, 'connection'));
+  toast(`Saved. This session: ${bits.join(', ')}.`);
+}
+function closeGate(doneAt){
+  const ch = B.chk;
+  if (ch && doneAt){ ch.from = ch.done = doneAt; ch.turns = 0; }
+  closeModal(); saveLearnSoon(); updateLabels();
+  if (B.gateResume){ B.gateResume = false; unlockAudio(); play(); }
+}
+function skipGate(){
+  if (B.sess) B.sess.skips++;
+  closeGate(anchorOfIdx(visibleRange()[0]));
+  toast('Skipped. Folio counts what you process, not the pages you pass.');
+}
+function againGate(rng){
+  if (B.chk) B.chk.turns = 0;
+  B.gateResume = false;
+  closeModal();
+  if (B.engine) B.engine.goTo(idxOfAnchor(rng.from));
+}
+
+/* ---- Cards (one at a time, over the book) ---- */
+function openModal(o){
+  /* A fresh card element each time, so earlier cards' tap handlers can never fire again. */
+  const m = $('#modal'), old = $('#card'), card = old.cloneNode(false);
+  old.replaceWith(card);
+  card.innerHTML = o.html;
+  m.hidden = false;
+  Modal.dismiss = o.blocking ? null : (o.onDismiss || closeModal);
+  if (o.bind) o.bind(card);
+  const body = $('.card-body', card); if (body) body.scrollTop = 0;
+}
+function closeModal(){ $('#modal').hidden = true; $('#card').innerHTML = ''; Modal.dismiss = null; }
+$('#modal').addEventListener('click', e => { if (e.target === $('#modal') && Modal.dismiss) Modal.dismiss(); });
+
+function showStartCard(){
+  const l = B.learn, scripts = getScripts();
+  const last = l.sessions.slice().reverse().find(s => s !== B.sess && s.drill);
+  const finish = () => { const g = $('#sGoal'); if (g && B.learn === l){ l.goal = g.value.trim(); saveLearnSoon(); } closeModal(); };
+  openModal({
+    onDismiss:finish,
+    html:`<div class="card-head"><div class="eyebrow">Before you read</div><h2>${esc(B.title)}</h2></div>
+      <div class="card-body">
+        <div class="q"><label for="sGoal">Your goal for this book</label><textarea id="sGoal" class="field" rows="2" placeholder="After this book I want to be able to…">${esc(l.goal)}</textarea><p class="help">Every pause asks how what you read connects back to this.</p></div>
+        ${last ? `<p class="rule"><b>Your drill from last time:</b> ${esc(last.drill)}</p>` : ''}
+        ${scripts.length ? `<div class="q"><label>Your scripts</label><ol class="scripts">${scripts.map(s => `<li>${esc(s)}</li>`).join('')}</ol></div>` : ''}
+        <p class="rule">Speed and comfort aren’t progress. Folio counts what you <b>processed</b>: summaries, analogies, connections, and highlights with a reason.</p>
+      </div>
+      <div class="card-foot"><button class="btn ghost" data-act="edit" type="button">Edit scripts</button><span class="sp"></span><button class="btn primary" data-act="go" type="button">Start reading</button></div>`,
+    bind(card){
+      card.addEventListener('click', e => {
+        const a = e.target.closest('[data-act]');
+        if (!a) return;
+        finish();
+        if (a.dataset.act === 'edit'){ openSheet(); setTimeout(() => $('#learnGrp').scrollIntoView({ block:'start' }), 80); }
+      });
+    }
+  });
+}
+
+/* ---- End of session: reflect on the old habit and set a drill ---- */
+function maybeReflect(done){
+  const s = B.sess;
+  if (!S.lReflect || !s || !B.learn) return false;
+  const mins = (Date.now() - s.start) / 60000;
+  if (!(s.sums || s.hls || mins >= 10)) return false;
+  showReflect(done);
+  return true;
+}
+function showReflect(done){
+  const s = B.sess, mins = Math.max(1, Math.round((Date.now() - s.start) / 60000));
+  const bits = [`<b>${mins} min</b>`, `<b>${plural(s.sums, 'summary', 'summaries')}</b>`];
+  if (s.ana) bits.push(`<b>${plural(s.ana, 'analogy', 'analogies')}</b>`);
+  if (s.con) bits.push(`<b>${plural(s.con, 'connection')}</b>`);
+  if (s.hls) bits.push(`<b>${plural(s.hls, 'highlight')}</b>`);
+  if (s.skips) bits.push(`skipped ${plural(s.skips, 'pause')}`);
+  bits.push(`${plural(s.pages, 'page')} turned`);
+  openModal({
+    html:`<div class="card-head"><div class="eyebrow">Session done</div><h2>How did it go?</h2><p class="statline">${bits.join(' · ')}</p></div>
+      <div class="card-body">
+        <div class="q"><label for="rOld">Where did the old habit show up today?</label><textarea id="rOld" class="field" rows="2" placeholder="e.g. I skimmed when it got dense; I wanted to highlight everything">${esc(s.old)}</textarea></div>
+        <div class="q"><label for="rBetter">What worked better with the new method?</label><textarea id="rBetter" class="field" rows="2" placeholder="e.g. Making an analogy made the idea stick">${esc(s.better)}</textarea></div>
+        <div class="q"><label for="rDrill">One thing to drill next time</label><textarea id="rDrill" class="field" rows="2" placeholder="e.g. Summarise every paragraph of the next chapter before moving on">${esc(s.drill)}</textarea><p class="help">Like a constraint drill in training: work on the weak spot on its own. It shows when you next open this book.</p></div>
+      </div>
+      <div class="card-foot"><button class="btn ghost" data-act="stay" type="button">Keep reading</button><button class="btn ghost" data-act="skip" type="button">Skip</button><span class="sp"></span><button class="btn primary" data-act="save" type="button">Save and close</button></div>`,
+    bind(card){
+      card.addEventListener('click', e => {
+        const a = e.target.closest('[data-act]');
+        if (!a) return;
+        if (a.dataset.act === 'stay'){ closeModal(); return; }
+        if (a.dataset.act === 'save'){ s.old = $('#rOld', card).value.trim(); s.better = $('#rBetter', card).value.trim(); s.drill = $('#rDrill', card).value.trim(); saveLearnNow(); }
+        closeModal(); done();
+      });
+    }
+  });
+}
+
+/* ---- Highlights: sentence-level, and each one needs a reason ---- */
+function sentencesOf(blk){ return blk.ss || (blk.ss = sentenceSpans(blk.text)); }
+/* Which sentence is under the finger? Measured from where the words are drawn on screen. */
+function hitSentence(el, x, y){
+  if (!el || !B.blocks) return null;
+  const b = +el.dataset.b, blk = B.blocks[b], tn = el.firstChild;
+  if (!blk || !tn || tn.nodeType !== 3) return null;
+  const s0 = charOfWord(blk, +el.dataset.w0), s1 = s0 + tn.length;
+  for (const [a, e] of sentencesOf(blk)){
+    if (e <= s0 || a >= s1) continue;
+    const r = document.createRange();
+    r.setStart(tn, Math.max(a, s0) - s0); r.setEnd(tn, Math.min(e, s1) - s0);
+    for (const rc of r.getClientRects()) if (x >= rc.left - 3 && x <= rc.right + 3 && y >= rc.top - 3 && y <= rc.bottom + 3) return { b, a, e };
+  }
+  return null;
+}
+function partsOf(m){
+  const out = [], bl = B.blocks;
+  if (!bl) return out;
+  for (let b = m.b0; b <= m.b1 && b < bl.length; b++) out.push({ b, c0:b === m.b0 ? m.c0 : 0, c1:b === m.b1 ? m.c1 : bl[b].text.length });
+  return out;
+}
+function quoteOf(m){ return partsOf(m).map(p => B.blocks[p.b].text.slice(p.c0, p.c1)).join(' '); }
+/* Check saved highlights still line up with the text; if not, find their words again. */
+function checkMarks(){
+  if (B.marksOk || !B.blocks || !B.learn) return;
+  B.marksOk = true;
+  for (const m of B.learn.marks){
+    if (m.b1 < B.blocks.length && quoteOf(m) === m.quote){ m.lost = false; continue; }
+    let found = false;
+    for (let b = 0; b < B.blocks.length && !found; b++){
+      const i = B.blocks[b].text.indexOf(m.quote);
+      if (i >= 0){ m.b0 = m.b1 = b; m.c0 = i; m.c1 = i + m.quote.length; m.sp = B.blocks[b].sp; found = true; }
+    }
+    m.lost = !found;
+  }
+}
+function paintMarks(){
+  if (!HL) return;
+  for (const k in KINDS) CSS.highlights.delete('folio-mk-' + k);
+  if (!B.learn || !B.layout || B.layout.mode !== 'reflow' || !B.blocks) return;
+  checkMarks();
+  const by = { key:[], link:[], q:[] };
+  for (const m of B.learn.marks){ if (m.lost) continue; for (const p of partsOf(m)) by[m.kind in by ? m.kind : 'key'].push(...rangesFor(p.b, p.c0, p.c1)); }
+  for (const k in by) if (by[k].length) CSS.highlights.set('folio-mk-' + k, new Highlight(...by[k]));
+}
+function markAt(x, y){
+  if (!B.learn || !B.layout || B.layout.mode !== 'reflow' || !B.blocks) return null;
+  for (const m of B.learn.marks){
+    if (m.lost) continue;
+    for (const p of partsOf(m)) for (const r of rangesFor(p.b, p.c0, p.c1)) for (const rc of r.getClientRects())
+      if (x >= rc.left && x <= rc.right && y >= rc.top - 1 && y <= rc.bottom + 1) return m;
+  }
+  return null;
+}
+function openMarkAt(x, y){ const m = markAt(x, y); if (!m) return false; openMarkNote(m, false); return true; }
+function cmpPick(p, q){ return (p.b - q.b) || (p.a - q.a); }
+function selOf(a, z){
+  z = z || a;
+  if (cmpPick(z, a) < 0){ const t = a; a = z; z = t; }
+  return { b0:a.b, c0:a.a, b1:z.b, c1:z.e };
+}
+/* Reflowed text: tap sentences on the page. */
+function pickStart(){
+  HLM.on = true; HLM.a = HLM.z = null;
+  $('#hlBtn').setAttribute('aria-pressed', 'true');
+  reader.classList.remove('chrome-off');
+  $('#pickbar').hidden = false;
+  pickUI();
+}
+function pickEnd(){
+  HLM.on = false; HLM.a = HLM.z = null;
+  if (HL) CSS.highlights.delete('folio-pick');
+  $('#pickbar').hidden = true;
+  $('#hlBtn').setAttribute('aria-pressed', 'false');
+}
+function pickUI(){
+  $('#pickText').textContent = !HLM.a ? 'Tap a sentence to highlight it' : HLM.z ? 'Passage selected' : 'Tap another sentence to extend';
+  $('#pickGo').disabled = !HLM.a;
+  if (!HL) return;
+  CSS.highlights.delete('folio-pick');
+  if (!HLM.a) return;
+  const s = selOf(HLM.a, HLM.z), rs = [];
+  for (const p of partsOf(s)) rs.push(...rangesFor(p.b, p.c0, p.c1));
+  if (rs.length) CSS.highlights.set('folio-pick', new Highlight(...rs));
+}
+function pickTap(target, x, y){
+  const el = target && target.closest ? target.closest('.pg-body [data-b]') : null;
+  const hs = el ? hitSentence(el, x, y) : null;
+  if (!hs) return;
+  if (!HLM.a || HLM.z) { HLM.a = hs; HLM.z = null; } else HLM.z = hs;
+  pickUI();
+}
+$('#pickCancel').addEventListener('click', pickEnd);
+$('#pickGo').addEventListener('click', () => { if (!HLM.a) return; const s = selOf(HLM.a, HLM.z); pickEnd(); openMarkNote(s, true); });
+$('#hlBtn').addEventListener('click', async () => {
+  if (!B.pdf || !B.layout) return;
+  if (HLM.on){ pickEnd(); return; }
+  if (B.layout.mode === 'reflow'){ pickStart(); return; }
+  /* Original PDF pages are pictures, so you pick sentences from this page's text instead. */
+  const pdf = B.pdf;
+  if (B.textState !== 'ready'){
+    setBusy('Preparing text…');
+    await ensureText();
+    hideBusy();
+    if (B.pdf !== pdf) return;
+    if (B.textState !== 'ready'){ toast('This PDF has no text to highlight. It’s probably a scanned book.'); return; }
+  }
+  openPagePicker();
+});
+function markClass(b, a, e){
+  if (!B.learn) return '';
+  for (const m of B.learn.marks){
+    if (m.lost) continue;
+    for (const p of partsOf(m)) if (p.b === b && p.c0 < e && p.c1 > a) return ' mk-' + (m.kind in KINDS ? m.kind : 'key');
+  }
+  return '';
+}
+function openPagePicker(){
+  const [x, z] = visibleRange(), bl = B.blocks;
+  let first = bl.findIndex(blk => blk.sp >= x);
+  if (first < 0) first = bl.length;
+  const list = [];
+  if (first > 0 && bl[first - 1].sp === x - 1 && bl[first - 1].t === 'p' && !END.test(bl[first - 1].text)) list.push(first - 1);
+  for (let i = first; i < bl.length && bl[i].sp <= z; i++) list.push(i);
+  if (!list.length){ toast('There’s no text on this page to highlight.'); return; }
+  const sel = { a:null, z:null };
+  const pageLbl = x === z ? `PDF page ${x + 1}` : `PDF pages ${x + 1}–${z + 1}`;
+  const html = list.map(i => {
+    const blk = bl[i], tag = blk.t === 'h' ? 'h4' : 'p';
+    const cont = blk.sp < x ? '<span class="cont">Continued from the previous page</span>' : '';
+    return `<${tag}>${cont}${sentencesOf(blk).map(([a, e]) => `<span class="sent${markClass(i, a, e)}" data-b="${i}" data-a="${a}" data-e="${e}">${esc(blk.text.slice(a, e))}</span>`).join(' ')}</${tag}>`;
+  }).join('');
+  openModal({
+    html:`<div class="card-head"><div class="eyebrow">Highlight · ${pageLbl}</div><h2>Tap what matters</h2><p>Tap a sentence, then another to select a passage. Coloured ones are already highlighted.</p></div>
+      <div class="card-body"><div class="pick">${html}</div></div>
+      <div class="card-foot"><button class="btn ghost" data-act="cancel" type="button">Cancel</button><span class="sp"></span><button class="btn primary" data-act="go" type="button" disabled>Add why</button></div>`,
+    bind(card){
+      const go = $('[data-act="go"]', card);
+      const refresh = () => {
+        const s = sel.a ? selOf(sel.a, sel.z) : null;
+        $$('.sent', card).forEach(sp => {
+          const p = { b:+sp.dataset.b, a:+sp.dataset.a };
+          const on = s && cmpPick(p, { b:s.b0, a:s.c0 }) >= 0 && (p.b < s.b1 || (p.b === s.b1 && p.a < s.c1));
+          sp.classList.toggle('sel', !!on);
+        });
+        go.disabled = !sel.a;
+      };
+      card.addEventListener('click', e => {
+        const sp = e.target.closest('.sent');
+        if (sp){
+          const p = { b:+sp.dataset.b, a:+sp.dataset.a, e:+sp.dataset.e };
+          if (!sel.a || sel.z){ sel.a = p; sel.z = null; } else sel.z = p;
+          refresh(); return;
+        }
+        const a = e.target.closest('[data-act]');
+        if (!a) return;
+        if (a.dataset.act === 'go' && sel.a) openMarkNote(selOf(sel.a, sel.z), true);
+        else if (a.dataset.act === 'cancel') closeModal();
+      });
+    }
+  });
+}
+function openMarkNote(m, isNew){
+  const quote = isNew ? quoteOf(m) : m.quote;
+  let kind = m.kind in KINDS ? m.kind : 'key';
+  const sp = B.blocks && B.blocks[m.b0] ? B.blocks[m.b0].sp : (m.sp || 0);
+  openModal({
+    html:`<div class="card-head"><div class="eyebrow">Highlight · PDF page ${sp + 1}</div><h2>Why does this matter?</h2><p>A highlight on its own is passive. Folio keeps it with your reason.</p></div>
+      <div class="card-body">
+        <blockquote class="quote ${kind}" id="mQuote">${esc(quote)}</blockquote>
+        <div class="kinds" role="group" aria-label="Kind of highlight">${Object.entries(KINDS).map(([k, v]) => `<button type="button" data-v="${k}" aria-pressed="${k === kind}"><i></i>${v}</button>`).join('')}</div>
+        <div class="q"><label for="mNote">Your reason</label><textarea id="mNote" class="field" rows="3" placeholder="${esc(KIND_HELP[kind])}">${esc(m.note || '')}</textarea></div>
+      </div>
+      <div class="card-foot">${isNew ? '' : '<button class="btn danger" data-act="del" type="button">Delete</button>'}<span class="sp"></span><button class="btn ghost" data-act="cancel" type="button">Cancel</button><button class="btn primary" data-act="save" type="button" disabled>Save highlight</button></div>`,
+    bind(card){
+      const note = $('#mNote', card), go = $('[data-act="save"]', card);
+      const check = () => { go.disabled = wordCount(note.value) < 3; };
+      note.addEventListener('input', check); check();
+      card.addEventListener('click', e => {
+        const k = e.target.closest('.kinds button');
+        if (k){
+          kind = k.dataset.v;
+          $$('.kinds button', card).forEach(b => b.setAttribute('aria-pressed', String(b === k)));
+          $('#mQuote', card).className = 'quote ' + kind;
+          note.placeholder = KIND_HELP[kind];
+          return;
+        }
+        const a = e.target.closest('[data-act]');
+        if (!a) return;
+        if (a.dataset.act === 'save' && !go.disabled){
+          if (isNew){
+            B.learn.marks.push({ id:uid(), at:Date.now(), b0:m.b0, c0:m.c0, b1:m.b1, c1:m.c1, sp, quote, kind, note:note.value.trim() });
+            if (B.sess) B.sess.hls++;
+            toast('Highlight saved with your reason.');
+          } else { m.kind = kind; m.note = note.value.trim(); }
+          saveLearnSoon(); closeModal(); afterLearnChange();
+        } else if (a.dataset.act === 'del'){
+          if (!a.classList.contains('armed')){ a.classList.add('armed'); a.textContent = 'Tap again to delete'; return; }
+          B.learn.marks.splice(B.learn.marks.indexOf(m), 1);
+          saveLearnSoon(); closeModal(); afterLearnChange();
+        } else if (a.dataset.act === 'cancel') closeModal();
+      });
+      if (!isTouch && isNew) setTimeout(() => note.focus(), 60);
+    }
+  });
+}
+function afterLearnChange(){ paintMarks(); updateNbBadge(); if (!$('#nb').hidden) renderNotebook(); }
+/* Original PDF: the badge counts highlights on the pages you're looking at (they can't be drawn on a picture of the page). */
+function updateNbBadge(){
+  const el = $('#nbBadge');
+  if (!el) return;
+  let n = 0;
+  if (B.learn && B.layout && B.layout.mode === 'original' && B.pages.length){
+    const [x, z] = visibleRange();
+    n = B.learn.marks.filter(m => !m.lost && m.sp >= x && m.sp <= z).length;
+  }
+  el.hidden = !n;
+  el.textContent = n ? String(n) : '';
+  $('#nbBtn').setAttribute('aria-label', n ? `Notebook (${plural(n, 'highlight')} on this page)` : 'Notebook: your summaries, highlights and reflections');
+}
+
+/* ---- Notebook: everything you processed, in book order, with a recall mode ---- */
+let recallMode = false;
+function openNotebook(){ if (!B.learn) return; pickEnd(); $('#nb').hidden = false; renderNotebook(); }
+function closeNotebook(){ $('#nb').hidden = true; }
+function bookOrder(){
+  const l = B.learn;
+  const items = l.entries.map(e => ({ k:e.from || { sp:0 }, t:'sum', e })).concat(l.marks.map(m => ({ k:{ sp:m.sp || 0, b:m.b0, c:m.c0 }, t:'hl', e:m })));
+  const bv = k => k.b != null ? k.b : -1;
+  return items.sort((x, y) => ((x.k.sp || 0) - (y.k.sp || 0)) || (bv(x.k) - bv(y.k)) || ((x.k.c || 0) - (y.k.c || 0)));
+}
+function fmtDate(t){ try { return new Date(t).toLocaleDateString(undefined, { weekday:'short', day:'numeric', month:'short' }); } catch(e){ return ''; } }
+function renderNotebook(){
+  const l = B.learn, c = counts(l), hid = recallMode ? ' hid' : '';
+  $('#nbSub').textContent = B.title;
+  const f = (k, v, cls) => v ? `<div class="f"><div class="k">${k}</div><div class="v${cls || ''}">${esc(v)}</div></div>` : '';
+  const items = bookOrder().map(it => {
+    const e = it.e;
+    if (it.t === 'sum') return `<div class="entry" data-id="${e.id}" data-t="sum">
+        <div class="where"><span>${esc(e.label || '')}${e.heading ? ' · ' + esc(e.heading) : ''}</span><div class="acts"><button class="mini" data-act="go" type="button">Go to page</button><button class="mini" data-act="edit" type="button">Edit</button></div></div>
+        ${f('Summary', e.summary, hid)}${f('Analogy', e.analogy, hid)}${f('Connection', e.connection, hid)}</div>`;
+    const kind = e.kind in KINDS ? e.kind : 'key';
+    return `<div class="entry" data-id="${e.id}" data-t="hl">
+        <div class="where"><span>${KINDS[kind]} · PDF page ${(e.sp || 0) + 1}${e.lost ? ' · text not found' : ''}</span><div class="acts"><button class="mini" data-act="go" type="button">Go to page</button><button class="mini" data-act="edit" type="button">Edit</button></div></div>
+        <blockquote class="quote ${kind}">${esc(e.quote)}</blockquote>${f('Why it matters', e.note, hid)}</div>`;
+  }).join('');
+  const sessions = l.sessions.filter(s => s.sums || s.hls || s.old || s.better || s.drill).slice().reverse().map(s => {
+    const mins = Math.max(1, Math.round(((s === B.sess ? Date.now() : s.end) - s.start) / 60000));
+    const st = [plural(s.sums || 0, 'summary', 'summaries')];
+    if (s.ana) st.push(plural(s.ana, 'analogy', 'analogies'));
+    if (s.con) st.push(plural(s.con, 'connection'));
+    if (s.hls) st.push(plural(s.hls, 'highlight'));
+    if (s.skips) st.push(`skipped ${plural(s.skips, 'pause')}`);
+    return `<div class="entry"><div class="where"><span>${fmtDate(s.start)} · ${mins} min${s === B.sess ? ' · now' : ''}</span></div>
+      <p class="statline">${st.join(' · ')}</p>${f('Where the old habit showed up', s.old)}${f('What worked better', s.better)}${f('Drill for next time', s.drill)}</div>`;
+  }).join('');
+  $('#nbIn').innerHTML =
+    `<div class="goal"><div class="k">Your goal<button class="mini" data-act="goal" type="button">${l.goal ? 'Edit' : 'Add'}</button></div><div class="v">${l.goal ? esc(l.goal) : '<span class="empty-note">What do you want to be able to do after this book?</span>'}</div></div>
+     <div class="stats">
+       <div class="stat"><b>${c.sums}</b>${c.sums === 1 ? 'summary' : 'summaries'}</div><div class="stat"><b>${c.ana}</b>${c.ana === 1 ? 'analogy' : 'analogies'}</div>
+       <div class="stat"><b>${c.con}</b>${c.con === 1 ? 'connection' : 'connections'}</div><div class="stat"><b>${c.hls}</b>${c.hls === 1 ? 'highlight' : 'highlights'}</div>
+       <div class="stat minor"><b>${c.pages}</b>${c.pages === 1 ? 'page turned' : 'pages turned'}</div>
+     </div>
+     <label class="row" for="nbRecall">Test yourself: hide my answers <input id="nbRecall" class="switch" type="checkbox" ${recallMode ? 'checked' : ''}></label>
+     ${recallMode ? '<p class="hint">Recall each part from its page and heading first, then tap the blurred text to check yourself.</p>' : ''}
+     <h3>In book order</h3>
+     <div class="${recallMode ? 'recall' : ''}" style="display:grid;gap:12px">${items || '<p class="empty-note">Nothing yet. Summaries from your pauses and highlights with a reason collect here, in book order.</p>'}</div>
+     ${sessions ? `<h3>Sessions</h3><div style="display:grid;gap:12px">${sessions}</div>` : ''}`;
+}
+function findItem(t, id){ const l = B.learn; return t === 'sum' ? l.entries.find(e => e.id === id) : l.marks.find(m => m.id === id); }
+$('#nbIn').addEventListener('click', e => {
+  const v = e.target.closest('.v.hid');
+  if (v){ v.classList.remove('hid'); return; }
+  const a = e.target.closest('[data-act]');
+  if (!a) return;
+  if (a.dataset.act === 'goal'){ editGoal(); return; }
+  const card = a.closest('.entry'), item = card && findItem(card.dataset.t, card.dataset.id);
+  if (!item) return;
+  if (a.dataset.act === 'go'){
+    const anchor = card.dataset.t === 'sum' ? item.from : { sp:item.sp, b:item.lost ? null : item.b0, c:item.c0 };
+    closeNotebook();
+    if (B.engine) B.engine.goTo(idxOfAnchor(anchor));
+  } else if (a.dataset.act === 'edit'){
+    if (card.dataset.t === 'hl') openMarkNote(item, false); else editEntry(item);
+  }
+});
+$('#nbIn').addEventListener('change', e => { if (e.target.id === 'nbRecall'){ recallMode = e.target.checked; renderNotebook(); } });
+function editGoal(){
+  const l = B.learn;
+  openModal({
+    html:`<div class="card-head"><div class="eyebrow">Your goal</div><h2>${esc(B.title)}</h2></div>
+      <div class="card-body"><div class="q"><label for="eGoal">What do you want to be able to do after this book?</label><textarea id="eGoal" class="field" rows="3">${esc(l.goal)}</textarea></div></div>
+      <div class="card-foot"><span class="sp"></span><button class="btn ghost" data-act="cancel" type="button">Cancel</button><button class="btn primary" data-act="save" type="button">Save</button></div>`,
+    bind(card){ card.addEventListener('click', e => { const a = e.target.closest('[data-act]'); if (!a) return; if (a.dataset.act === 'save'){ l.goal = $('#eGoal', card).value.trim(); saveLearnSoon(); } closeModal(); afterLearnChange(); }); }
+  });
+}
+function editEntry(en){
+  openModal({
+    html:`<div class="card-head"><div class="eyebrow">${esc(en.label || 'Summary')}</div><h2>Edit your notes</h2>${en.heading ? `<p>${esc(en.heading)}</p>` : ''}</div>
+      <div class="card-body">
+        <div class="q"><label for="eSum">Summary</label><textarea id="eSum" class="field" rows="4">${esc(en.summary)}</textarea></div>
+        <div class="q"><label for="eAna">Analogy</label><textarea id="eAna" class="field" rows="2">${esc(en.analogy)}</textarea></div>
+        <div class="q"><label for="eCon">Connection</label><textarea id="eCon" class="field" rows="2">${esc(en.connection)}</textarea></div>
+      </div>
+      <div class="card-foot"><button class="btn danger" data-act="del" type="button">Delete</button><span class="sp"></span><button class="btn ghost" data-act="cancel" type="button">Cancel</button><button class="btn primary" data-act="save" type="button">Save</button></div>`,
+    bind(card){
+      card.addEventListener('click', e => {
+        const a = e.target.closest('[data-act]');
+        if (!a) return;
+        if (a.dataset.act === 'save'){
+          const s = $('#eSum', card).value.trim();
+          if (wordCount(s) < 1){ toast('A summary can’t be empty. Delete it instead.'); return; }
+          en.summary = s; en.analogy = $('#eAna', card).value.trim(); en.connection = $('#eCon', card).value.trim();
+          saveLearnSoon();
+        } else if (a.dataset.act === 'del'){
+          if (!a.classList.contains('armed')){ a.classList.add('armed'); a.textContent = 'Tap again to delete'; return; }
+          B.learn.entries.splice(B.learn.entries.indexOf(en), 1); saveLearnSoon();
+        }
+        closeModal(); afterLearnChange();
+      });
+    }
+  });
+}
+/* Your notes as plain text, ready to paste into Notes, a doc, or a chat with Claude. */
+function notebookText(){
+  const l = B.learn, out = [`# ${B.title}`, '', '_Notes from Folio_', ''];
+  if (l.goal) out.push(`**Goal:** ${l.goal}`, '');
+  for (const it of bookOrder()){
+    const e = it.e;
+    if (it.t === 'sum'){
+      out.push(`## ${e.label || ''}${e.heading ? ' — ' + e.heading : ''}`, `- **Summary:** ${e.summary}`);
+      if (e.analogy) out.push(`- **Analogy:** ${e.analogy}`);
+      if (e.connection) out.push(`- **Connection:** ${e.connection}`);
+    } else {
+      out.push(`> ${e.quote}`, '', `*${KINDS[e.kind in KINDS ? e.kind : 'key']}, PDF page ${(e.sp || 0) + 1}.* **Why it matters:** ${e.note}`);
+    }
+    out.push('');
+  }
+  const ss = l.sessions.filter(s => s.old || s.better || s.drill);
+  if (ss.length){
+    out.push('## Reflections');
+    for (const s of ss) out.push(`- **${fmtDate(s.start)}:** ${[s.old && 'Old habit: ' + s.old, s.better && 'Worked better: ' + s.better, s.drill && 'Drill: ' + s.drill].filter(Boolean).join(' · ')}`);
+  }
+  return out.join('\n');
+}
+$('#nbBtn').addEventListener('click', openNotebook);
+$('#nbClose').addEventListener('click', () => closeNotebook());
+if (navigator.share) $('#nbShare').hidden = false;
+$('#nbShare').addEventListener('click', () => { navigator.share({ title:B.title + ' — notes', text:notebookText() }).catch(() => {}); });
+$('#nbCopy').addEventListener('click', async () => {
+  const text = notebookText();
+  try { await navigator.clipboard.writeText(text); toast('Notes copied. Paste them anywhere.'); }
+  catch(e){
+    openModal({ html:`<div class="card-head"><div class="eyebrow">Your notes</div><h2>Copy them from here</h2></div><div class="card-body"><textarea class="field" rows="12" readonly>${esc(text)}</textarea></div><div class="card-foot"><span class="sp"></span><button class="btn primary" data-act="ok" type="button">Done</button></div>`,
+      bind(card){ const t = $('textarea', card); t.focus(); t.select(); card.addEventListener('click', e => { if (e.target.closest('[data-act]')) closeModal(); }); } });
+  }
+});
+
+/* ---- Scripts editor (Reading settings) ---- */
+function renderScripts(){
+  const box = $('#scriptList');
+  if (!box) return;
+  const a = getScripts();
+  box.innerHTML = a.length
+    ? a.map((s, i) => `<div class="script-row"><span>${esc(s)}</span><button type="button" data-i="${i}" aria-label="Delete this script">${XSVG}</button></div>`).join('')
+    : '<p class="hint">No scripts yet. Add one below.</p>';
+}
+function bindLearnSettings(){
+  $('#scriptList').addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (!b) return; const a = getScripts(); a.splice(+b.dataset.i, 1); setScripts(a); renderScripts(); });
+  const add = () => { const inp = $('#scriptNew'), v = inp.value.trim(); if (!v) return; const a = getScripts(); a.push(v); setScripts(a); inp.value = ''; renderScripts(); };
+  $('#scriptAdd').addEventListener('click', add);
+  $('#scriptNew').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); add(); } });
+  $('#scriptReset').addEventListener('click', () => { setScripts(SCRIPTS_DEFAULT.slice()); renderScripts(); toast('Suggested scripts restored.'); });
+}
 
 /* Re-lay reflowed text if its web font finishes loading after the first layout. */
 if (document.fonts && document.fonts.addEventListener){

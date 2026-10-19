@@ -1,7 +1,7 @@
 /* Folio offline helper.
    Keeps a copy of the app on the device so it opens without internet.
    Your PDFs are never sent anywhere: they stay in this browser's own storage. */
-const APP_CACHE = 'folio-app-v4';
+const APP_CACHE = 'folio-app-v5';
 const FONT_CACHE = 'folio-fonts';
 const APP_FILES = [
   './',
