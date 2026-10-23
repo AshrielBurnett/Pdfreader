@@ -2,7 +2,7 @@
    Keeps a copy of the app on the device so it opens without internet.
    Your PDFs are never sent anywhere: they stay in this browser's own storage. */
 /* Change this name whenever any Folio file changes. That's what tells devices a new version exists. */
-const APP_CACHE = 'folio-app-v6';
+const APP_CACHE = 'folio-app-v7';
 const FONT_CACHE = 'folio-fonts';
 const APP_FILES = [
   './',
